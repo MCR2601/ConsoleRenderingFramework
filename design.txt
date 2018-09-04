@@ -1,0 +1,38 @@
+Console Rendering Framework Design document
+============================================
+v0.1
+by Marc Reiterer
+
+
+Goal:
+	Create a Framework that allows the rendering of pixels inside the console
+
+Features that are wanted:
+- System that allows printing information into the console
+-- only print changed pixels
+-- 
+-- (low priority) batching same colores together
+- public methodes for creating geometric objects
+
+
+this will not provide any structuring
+this will only provide a framework for placing pixels on 
+(no layouting, no layermanagement)
+
++ Screenmanager
+	These classes are the link between the real console and the application that wants to render things
+	currently planned:
+		- MultiSplitScreenManager
+			*) allows splitting screen in subscreens, where each are beeing used by Rendering Applications
+			*) Rendering Applications only know the size of their workarea
+
+		- FullScreenManager
+			*) provides a Screen that thinks it is a full screen
+			*) has no other special Move
+		- ObjectScreenManager
+			*) allows for using special Objects to be placed on the Screen
+			*) the Screen manages the rendering of the object automatically
+			*) the objects have following information:
+				+ positioninginformation of the object
+				+ array of pixel information (parts may be null to allow only partly override specific characters like only background or forground)
+				+ Size
