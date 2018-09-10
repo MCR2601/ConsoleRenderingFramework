@@ -16,6 +16,9 @@ namespace ConsoleRenderingFramework
         protected int height;
         protected int width;
 
+        protected int IdleCursorX = 0;
+        protected int IdleCursorY = 0;
+
         protected PInfo[,] ScreenBuffer;
         //PInfo[,] Screen;
         /// <summary>
@@ -58,6 +61,12 @@ namespace ConsoleRenderingFramework
             CreateScreen();
         }
 
+        public GMU(int h, int w, int cx, int cy):this(h,w)
+        {
+            IdleCursorX = cx;
+            IdleCursorY = cy;
+        }
+
         /// <summary>
         /// Processes all Pixels
         /// Prints all new Pixels to the Console
@@ -84,7 +93,8 @@ namespace ConsoleRenderingFramework
                     //}
                 }
             }
-            Debug.WriteLine(changedPixels);
+            //Debug.WriteLine(changedPixels);
+            Console.SetCursorPosition(IdleCursorX, IdleCursorY);
             //Screen = ScreenBuffer;
         }
 

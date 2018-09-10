@@ -20,6 +20,7 @@ namespace ConsoleRenderingFramework
                 {
                     _foreground = value;
                     isChanged = true;
+                    hasForeground = true;
                 }
             }
         }
@@ -33,6 +34,7 @@ namespace ConsoleRenderingFramework
                 {
                     _background = value;
                     isChanged = true;
+                    hasBackground = true;
                 }
             }
         }
@@ -46,6 +48,7 @@ namespace ConsoleRenderingFramework
                 {
                     _character = value;
                     isChanged = true;
+                    hasCharacter = true;
                 }
             }
         }

@@ -16,7 +16,19 @@ namespace BasicRenderProviders
             {
                 for (int x = 0; x < height; x++)
                 {
-                    data[i, x] = new PInfo(pi.character, pi.foreground, pi.background);
+                    data[i, x] = new PInfo();
+                    if (pi.hasForeground)
+                    {
+                        data[i, x].foreground = pi.foreground;
+                    }
+                    if (pi.hasBackground)
+                    {
+                        data[i, x].background = pi.background;
+                    }
+                    if (pi.hasCharacter)
+                    {
+                        data[i, x].character = pi.character;
+                    }
                 }
             }
             return data;

@@ -14,7 +14,7 @@ namespace Doom
     {
         const double Speed = 0.3;
         const int height = 50;
-        const int width = 70;
+        const int width = 100;
         const double rotation = 10 * Math.PI / 180;
 
         const bool inConsole = true;
