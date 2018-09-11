@@ -115,6 +115,26 @@ namespace ConsoleRenderingFramework
             Console.ForegroundColor = foreground;
             Console.Write(character);
         }
+
+
+        public PInfo SetCharacter(char c)
+        {
+            character = c;
+            return this;
+        }
+
+        public PInfo SetForeground(ConsoleColor f)
+        {
+            foreground = f;
+            return this;
+        }
+
+        public PInfo SetBackground(ConsoleColor b)
+        {
+            background = b;
+            return this;
+        }
+
         /// <summary>
         /// adds the value of an other <see cref="PInfo"/> to this
         /// </summary>
