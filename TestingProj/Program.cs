@@ -15,7 +15,12 @@ namespace TestingProj
         static void Main(string[] args)
         {
             //Image img = Image.FromFile("test.file");
-            
+
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.Clear();
+
 
             Console.WriteLine(Console.WindowWidth);
             Console.WriteLine(Console.WindowHeight);
@@ -39,6 +44,11 @@ namespace TestingProj
 
             fs1.App_DrawScreen(BasicProvider.getInked(48, 38, new PInfo(' ', ConsoleColor.White, ConsoleColor.Red)), 1, 1, null);
             fs2.App_DrawScreen(BasicProvider.getInked(48, 38, new PInfo(' ', ConsoleColor.White, ConsoleColor.Blue)), 1, 1, null);
+
+            fs1.App_DrawScreen(simpleSquare, 1, 1, null);
+
+            fs2.App_DrawScreen(BasicProvider.TextToPInfo("I try this new thing with text", 10, 10, new PInfo(' ', ConsoleColor.Green, ConsoleColor.Black)),3,2,null);
+
 
             gmu.PrintFrame();
 

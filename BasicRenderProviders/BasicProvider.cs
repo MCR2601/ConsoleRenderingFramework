@@ -40,68 +40,108 @@ namespace BasicRenderProviders
             {
                 parts[0] = text;
             }
-            int linesLeft = maxheight;
-            int charsLeft = maxwidth;
-            int currIndex = 0;
-            int currCharIndex = 0;
-            int currLineIndex = 0;
 
-            bool done = false;
 
-            PInfo[,] data = new PInfo[maxwidth, maxheight];
+            PInfo[,] data = getInked(maxwidth, maxheight, apperence);
 
-            data.Populate(apperence);
+            // used to know when to stop
+            int height = 0;
+            // index of current word
+            int word = 0;
 
-            while (!done)
+            Line[] lines = new Line[maxheight];
+            for (int i = 0; i < lines.Length; i++)
             {
-                if (currIndex==parts.Length)
+                lines[i] = new Line(maxwidth);
+            }
+
+            while (height<maxheight && word<parts.Length)
+            {
+                if (lines[height].Fit(new Word(parts[word])))
                 {
-                    done = true;
+                    // it fits so we will proceede with next word
+                    word++;
                 }
                 else
                 {
-                    // if there is enough space in the current line print everything
-                    if (parts[currIndex].Length<=charsLeft)
-                    {
-                        for (int i = 0; i < parts[currIndex].Length; i++)
-                        {
-                            
-                            PInfo tmp = new PInfo(parts[currIndex][i], apperence.foreground, apperence.background);
-                            data[currCharIndex + i, currLineIndex] = tmp; 
-                        }
-                        currCharIndex += parts[currIndex].Length;
-                        charsLeft -= parts[currIndex].Length;
-                        currIndex++;
-                    }
-                    else
-                    {
-                        // no space move down a line
-                        if (linesLeft>0)
-                        {
-                            linesLeft--;
-                            currLineIndex++;
-
-                            charsLeft = data.GetLength(1);
-                            currCharIndex = 0;
-
-                        }
-                        else
-                        {
-                            done = true;
-                        }
-                    }
+                    // next line
+                    height++;
                 }
             }
 
-
-            //PInfo[,] info = new PInfo[1,1];
-
+            for (int h = 0; h < maxheight; h++)
+            {
+                PInfo[,] info = lines[h].GetDrawn(apperence);
+                for (int w = 0; w < info.GetLength(0); w++)
+                {
+                    data[w, h] = info[w, 0];
+                }
+            }
             return data;
 
         }
 
 
+        private class Word
+        {
+            public string content;
+            public Word(string c)
+            {
+                content = c;
+            }
 
+        }
+
+        private class Line
+        {
+            public int MaxLength;
+            public List<Word> content;
+
+            public int CurrLength
+            {
+                get
+                {
+                    return content.Sum(x => x.content.Length) + (content.Count - 1);
+                }
+            }
+
+            public Line(int mLength)
+            {
+                MaxLength = mLength;
+                content = new List<Word>();
+            }
+
+            public bool Fit(Word w)
+            {
+                if (CurrLength + 1 + w.content.Length <= MaxLength)
+                {
+                    content.Add(w);
+                    return true;
+                }
+                return false;
+            }
+            public PInfo[,] GetDrawn(PInfo look)
+            {
+                PInfo[,] info = getInked(MaxLength, 1, look);
+
+                int i = 0;
+
+                foreach (var item in content)
+                {
+                    foreach (var c in item.content)
+                    {
+                        info[i, 0].character = c;
+                        i++;
+                    }
+                    if (i<MaxLength)
+                    {
+                        i++;
+                    }
+                }
+                return info;
+            }
+
+        }
 
 
     }
