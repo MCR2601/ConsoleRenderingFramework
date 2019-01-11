@@ -13,8 +13,8 @@ namespace Doom
     class Program
     {
         const double Speed = 0.3;
-        const int height = 50;
-        const int width = 100;
+        const int height = 40;
+        const int width = 60;
         const double rotation = 10 * Math.PI / 180;
 
         const bool inConsole = true;
@@ -94,7 +94,7 @@ namespace Doom
         }
         public static void startGMU()
         {
-            GMU gmu = new GMU(height, width);
+            GMU gmu = new GMU(width, height);
             MultiSplitScreenManager sm = new MultiSplitScreenManager(gmu.PlacePixels, height, width);
             // use this for rendering
             FullScreenManager rs = new FullScreenManager(width - 2, height - 2, null);

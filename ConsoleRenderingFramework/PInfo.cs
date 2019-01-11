@@ -10,7 +10,7 @@ namespace ConsoleRenderingFramework
     /// </summary>
     public class PInfo
     {
-        private ConsoleColor _foreground = ConsoleColor.White;
+        private ConsoleColor _foreground;
         public ConsoleColor foreground
         {
             get { return _foreground; }
@@ -22,9 +22,15 @@ namespace ConsoleRenderingFramework
                     isChanged = true;
                     hasForeground = true;
                 }
+                if (!hasForeground)
+                {
+                    _foreground = value;
+                    isChanged = true;
+                    hasForeground = true;
+                }
             }
         }
-        private ConsoleColor _background = ConsoleColor.Black;
+        private ConsoleColor _background;
         public ConsoleColor background
         {
             get { return _background; }
@@ -36,9 +42,15 @@ namespace ConsoleRenderingFramework
                     isChanged = true;
                     hasBackground = true;
                 }
+                if (!hasBackground)
+                {
+                    _background = value;
+                    isChanged = true;
+                    hasBackground = true;
+                }
             }
         }
-        private char _character = ' ';
+        private char _character;
         public char character
         {
             get { return _character; }
@@ -49,6 +61,12 @@ namespace ConsoleRenderingFramework
                     _character = value;
                     isChanged = true;
                     hasCharacter = true;
+                }
+                if (!hasCharacter)
+                {
+                    _character = value;
+                    isChanged = true;
+                    hasBackground = true;
                 }
             }
         }
@@ -106,8 +124,11 @@ namespace ConsoleRenderingFramework
         public PInfo(char c = ' ', ConsoleColor fg = ConsoleColor.White, ConsoleColor bg = ConsoleColor.Black)
         {
             character = c;
+            hasCharacter = true;
             foreground = fg;
+            hasForeground = true;
             background = bg;
+            hasBackground = true;
         }
         public void PrintPixel()
         {
@@ -116,20 +137,34 @@ namespace ConsoleRenderingFramework
             Console.Write(character);
         }
 
-
-        public PInfo SetCharacter(char c)
+        /// <summary>
+        /// Sets the Character of this PInfo
+        /// </summary>
+        /// <param name="c">Character</param>
+        /// <returns>the changed PInfo</returns>
+        public PInfo SetC(char c)
         {
             character = c;
             return this;
         }
 
-        public PInfo SetForeground(ConsoleColor f)
+        /// <summary>
+        /// Sets the Foreground of this PInfo
+        /// </summary>
+        /// <param name="f">Foreground color</param>
+        /// <returns>the changed PInfo</returns>
+        public PInfo SetFg(ConsoleColor f)
         {
             foreground = f;
             return this;
         }
 
-        public PInfo SetBackground(ConsoleColor b)
+        /// <summary>
+        /// Sets the Background of this PInfo
+        /// </summary>
+        /// <param name="b">Background color</param>
+        /// <returns>the changed PInfo</returns>
+        public PInfo SetBg(ConsoleColor b)
         {
             background = b;
             return this;
@@ -179,7 +214,12 @@ namespace ConsoleRenderingFramework
                 this.character = info.character;
             }
         }
-        
+        public PInfo Copy()
+        {
+            PInfo n = new PInfo();
+            n.Override(this);
+            return n;
+        }
     }
     public static class PInfoUtil
     {
@@ -271,6 +311,6 @@ namespace ConsoleRenderingFramework
                     return Brushes.White;
                     break;
             }
-        }
+        }        
     }
 }

@@ -36,9 +36,9 @@ namespace ConsoleRenderingFramework
         /// <summary>
         /// creates a new GMU and creates a rendering Area with speciffic size
         /// </summary>
-        /// <param name="h">height in characters</param>
         /// <param name="w">width in characters</param>
-        public GMU(int h,int w)
+        /// <param name="h">height in characters</param>
+        public GMU(int w, int h)
         {
             if (h>Console.LargestWindowHeight||w>Console.LargestWindowWidth)
             {
@@ -61,7 +61,7 @@ namespace ConsoleRenderingFramework
             CreateScreen();
         }
 
-        public GMU(int h, int w, int cx, int cy):this(h,w)
+        public GMU(int w, int h, int cx, int cy) : this(w, h)
         {
             IdleCursorX = cx;
             IdleCursorY = cy;

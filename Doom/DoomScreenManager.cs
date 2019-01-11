@@ -17,7 +17,7 @@ namespace Doom
 
         double distPerHeigth;
         const double MAXDRAWDIST = 15;
-        static int FOV = 90;
+        static int FOV = 75;
         public Line Player = new Line(0,0,0,1);
 
         public double PlayerHeight = 1;
@@ -112,8 +112,8 @@ namespace Doom
                 pattern = new PInfo[,]
                 {
                     {
-                        new PInfo(){hasBackground = true, background = ConsoleColor.Black},
-                        new PInfo(){hasBackground = true, background = ConsoleColor.White},
+                        new PInfo(){hasBackground = true, background = ConsoleColor.Red},
+                        new PInfo(){hasBackground = true, background = ConsoleColor.Gray},
                         //new PInfo(){hasBackground = true, background = ConsoleColor.Black}
                     },
                     {

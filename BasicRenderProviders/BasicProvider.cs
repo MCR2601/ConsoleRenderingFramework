@@ -14,20 +14,20 @@ namespace BasicRenderProviders
             PInfo[,] data = new PInfo[width, height];
             for (int i = 0; i < width; i++)
             {
-                for (int x = 0; x < height; x++)
+                for (int y = 0; y < height; y++)
                 {
-                    data[i, x] = new PInfo();
+                    data[i, y] = new PInfo();
                     if (pi.hasForeground)
                     {
-                        data[i, x].foreground = pi.foreground;
+                        data[i, y].SetFg(pi.foreground);
                     }
                     if (pi.hasBackground)
                     {
-                        data[i, x].background = pi.background;
+                        data[i, y].SetBg(pi.background);
                     }
                     if (pi.hasCharacter)
                     {
-                        data[i, x].character = pi.character;
+                        data[i, y].SetC(pi.character);
                     }
                 }
             }
@@ -122,7 +122,17 @@ namespace BasicRenderProviders
             }
             public PInfo[,] GetDrawn(PInfo look)
             {
-                PInfo[,] info = getInked(MaxLength, 1, look);
+                PInfo[,] info;
+
+                if (look.hasBackground)
+                {
+                    info = getInked(MaxLength, 1, new PInfo().SetBg(look.background));
+                }
+                else
+                {
+                    info = getInked(MaxLength, 1, new PInfo());
+                }
+
 
                 int i = 0;
 
@@ -130,7 +140,8 @@ namespace BasicRenderProviders
                 {
                     foreach (var c in item.content)
                     {
-                        info[i, 0].character = c;
+                        info[i, 0].SetC(c);
+                        info[i, 0].SetFg(look.foreground);
                         i++;
                     }
                     if (i<MaxLength)

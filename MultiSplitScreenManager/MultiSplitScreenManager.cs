@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ConsoleRenderingFramework;
 using System.Drawing;
+using BasicRenderProviders;
 
 namespace BasicScreenManagerPackage
 {
@@ -27,11 +28,30 @@ namespace BasicScreenManagerPackage
 
         public event DrawEvent DrawScreen;
 
+        public PInfo Background = new PInfo();
+
+        // Borders will be placed around every Screen if enabled
+        // YOU have to make sure they dont overlap too much
+        // They are Drawn BEFORE everything
+        public PInfo Border = new PInfo();
+        public bool EnablingBordering = false;
+
         public MultiSplitScreenManager(DrawEvent DrawHirachy, int w, int h)
         {
             DrawScreen += DrawHirachy;
             width = w;
             height = h;
+        }
+
+        public MultiSplitScreenManager(DrawEvent DrawHirachy, int w, int h, PInfo BackgroundStyle) : this(DrawHirachy,w,h)
+        {
+            Background = BackgroundStyle;
+        }
+
+        public MultiSplitScreenManager(DrawEvent DrawHirachy, int w, int h, PInfo BackgroundStyle, PInfo BorderStyle) : this(DrawHirachy, w, h, BackgroundStyle)
+        {
+            Border = BorderStyle;
+            EnablingBordering = true;
         }
 
         public void AddScreen(IRenderingApplication app, Rectangle rec)
@@ -54,22 +74,48 @@ namespace BasicScreenManagerPackage
 
         public void App_DrawScreen(PInfo[,] information, int x, int y, IRenderingApplication sender)
         {
+            
             if (DrawScreen!=null)
             {
-                Tuple<Rectangle, int> pos = SplitScreens[sender];
-                DrawScreen(information, x + pos.Item1.X, y + pos.Item1.Y, this);
+                if (sender == this)
+                {
+                    DrawScreen(information, x, y, this);
+                }
+                else
+                {
+                    //Console.WriteLine(sender);
+                    Tuple<Rectangle, int> pos = SplitScreens[sender];
+                    DrawScreen(information, x + pos.Item1.X, y + pos.Item1.Y, this);
+                }                
             }
         }
 
         public void Render()
         {
-            foreach (var item in SplitScreens)
+            App_DrawScreen(BasicProvider.getInked(width, height, Background), 0, 0, this);
+
+            
+
+            foreach (var item in SplitScreens.OrderBy(x=>x.Value.Item2))
             {
+                if (EnablingBordering)
+                {
+
+                    App_DrawScreen(BasicProvider.getInked(item.Value.Item1.Width + 2, item.Value.Item1.Height + 2, Border), item.Value.Item1.X - 1, item.Value.Item1.Y - 1, this);
+                    App_DrawScreen(BasicProvider.getInked(item.Value.Item1.Width, item.Value.Item1.Height, Background), item.Value.Item1.X, item.Value.Item1.Y, this);
+
+                }
                 item.Key.Render();
             }
         }
 
-
+        public void ChangeLayerOf(IRenderingApplication app, int newLayer)
+        {
+            if (SplitScreens.ContainsKey(app))
+            {
+                SplitScreens[app] = new Tuple<Rectangle, int>(SplitScreens[app].Item1,newLayer);
+            }
+        }
 
     }
 }
