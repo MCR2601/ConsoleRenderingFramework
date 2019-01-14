@@ -7,13 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace CardGame
 {
     class CardGameStartup
     {
         static void Main(string[] args)
         {
-            GMU gmu = new GMU(102, 62, 0, 21);            
+            GMU gmu = new GMU(102, 62, 0, 0);            
             gmu.PlacePixels(BasicProvider.getInked(102, 62, new PInfo().SetBg(ConsoleColor.DarkGray)), 0, 0, null);
             gmu.PrintFrame();
             gmu.PlacePixels(BasicProvider.getInked(100, 60, new PInfo().SetBg(ConsoleColor.Black).SetFg( ConsoleColor.White).SetC(' ')), 1, 1, null);
@@ -43,10 +44,50 @@ namespace CardGame
 
             Test.LoadSheet(sheet);
             Test2.LoadSheet(sheet);
+            Test2.GetTextBox("Name").Content = "This is another TestBox. How is this working?";
 
             splitScreen.Render();
             gmu.PrintFrame();            
-            Console.ReadKey();
+            Console.ReadKey(true);
+            ConsoleKeyInfo info;
+
+            int selected = 1;
+
+            IRenderingApplication app = Test;
+
+            while((info = Console.ReadKey(true)).Key != ConsoleKey.Spacebar)
+            {
+                switch (info.Key)
+                {
+                    case ConsoleKey.D1:
+                        selected = 1;
+                        app = Test;                        
+                        splitScreen.ChangeLayerOf(Test2, 1);
+                        break;
+                    case ConsoleKey.D2:
+                        selected = 2;
+                        app = Test2;
+                        splitScreen.ChangeLayerOf(Test2, 3);
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        splitScreen.TranslatePositionOf(app, new System.Drawing.Point(-1, 0));
+                        break;
+                    case ConsoleKey.RightArrow:
+                        splitScreen.TranslatePositionOf(app, new System.Drawing.Point(1, 0));
+                        break;
+                    case ConsoleKey.DownArrow:
+                        splitScreen.TranslatePositionOf(app, new System.Drawing.Point(0, 1));
+                        break;
+                    case ConsoleKey.UpArrow:
+                        splitScreen.TranslatePositionOf(app, new System.Drawing.Point(0, -1));
+                        break;
+                    default:
+                        break;
+                }
+                splitScreen.Render();
+                gmu.PrintFrame();
+            }
+
             splitScreen.ChangeLayerOf(Test2, 3);
             splitScreen.Render();
             gmu.PrintFrame();
@@ -62,6 +103,10 @@ namespace CardGame
             splitScreen.ChangeLayerOf(Test2, 1);
             splitScreen.Render();
             gmu.PrintFrame();
+
+
+
+
 
             Console.ReadKey();
         }

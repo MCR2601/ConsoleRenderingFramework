@@ -11,72 +11,72 @@ namespace ConsoleRenderingFramework
     public class PInfo
     {
         private ConsoleColor _foreground;
-        public ConsoleColor foreground
+        public ConsoleColor Foreground
         {
             get { return _foreground; }
             set
             {
-                if (value != foreground)
+                if (value != Foreground)
                 {
                     _foreground = value;
                     isChanged = true;
-                    hasForeground = true;
+                    HasForeground = true;
                 }
-                if (!hasForeground)
+                if (!HasForeground)
                 {
                     _foreground = value;
                     isChanged = true;
-                    hasForeground = true;
+                    HasForeground = true;
                 }
             }
         }
         private ConsoleColor _background;
-        public ConsoleColor background
+        public ConsoleColor Background
         {
             get { return _background; }
             set
             {
-                if (background != value)
+                if (Background != value)
                 {
                     _background = value;
                     isChanged = true;
-                    hasBackground = true;
+                    HasBackground = true;
                 }
-                if (!hasBackground)
+                if (!HasBackground)
                 {
                     _background = value;
                     isChanged = true;
-                    hasBackground = true;
+                    HasBackground = true;
                 }
             }
         }
         private char _character;
-        public char character
+        public char Character
         {
             get { return _character; }
             set
             {
-                if (character != value)
+                if (Character != value)
                 {
                     _character = value;
                     isChanged = true;
-                    hasCharacter = true;
+                    HasCharacter = true;
                 }
-                if (!hasCharacter)
+                if (!HasCharacter)
                 {
                     _character = value;
                     isChanged = true;
-                    hasBackground = true;
+                    HasBackground = true;
                 }
             }
         }
         private bool _hasForeground = false;
-        public bool hasForeground
+        public bool HasForeground
         {
             get { return _hasForeground; }
             set
             {
-                if (value != hasForeground)
+                if (value != HasForeground)
                 {
                     _hasForeground = value;
                     isChanged = true;
@@ -84,12 +84,12 @@ namespace ConsoleRenderingFramework
             }
         }
         private bool _hasBackground = false;
-        public bool hasBackground
+        public bool HasBackground
         {
             get { return _hasBackground; }
             set
             {
-                if (value != hasBackground)
+                if (value != HasBackground)
                 {
                     _hasBackground = value;
                     isChanged = true;
@@ -97,12 +97,12 @@ namespace ConsoleRenderingFramework
             }
         }
         private bool _hasCharacter = false;
-        public bool hasCharacter
+        public bool HasCharacter
         {
             get { return _hasCharacter; }
             set
             {
-                if (value != hasCharacter)
+                if (value != HasCharacter)
                 {
                     _hasCharacter = value;
                     isChanged = true;
@@ -123,18 +123,18 @@ namespace ConsoleRenderingFramework
         /// <param name="bg">Backgroundcolor, standard = black</param>
         public PInfo(char c = ' ', ConsoleColor fg = ConsoleColor.White, ConsoleColor bg = ConsoleColor.Black)
         {
-            character = c;
-            hasCharacter = true;
-            foreground = fg;
-            hasForeground = true;
-            background = bg;
-            hasBackground = true;
+            Character = c;
+            HasCharacter = true;
+            Foreground = fg;
+            HasForeground = true;
+            Background = bg;
+            HasBackground = true;
         }
         public void PrintPixel()
         {
-            Console.BackgroundColor = background;
-            Console.ForegroundColor = foreground;
-            Console.Write(character);
+            Console.BackgroundColor = Background;
+            Console.ForegroundColor = Foreground;
+            Console.Write(Character);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace ConsoleRenderingFramework
         /// <returns>the changed PInfo</returns>
         public PInfo SetC(char c)
         {
-            character = c;
+            Character = c;
             return this;
         }
 
@@ -155,7 +155,7 @@ namespace ConsoleRenderingFramework
         /// <returns>the changed PInfo</returns>
         public PInfo SetFg(ConsoleColor f)
         {
-            foreground = f;
+            Foreground = f;
             return this;
         }
 
@@ -166,7 +166,7 @@ namespace ConsoleRenderingFramework
         /// <returns>the changed PInfo</returns>
         public PInfo SetBg(ConsoleColor b)
         {
-            background = b;
+            Background = b;
             return this;
         }
 
@@ -175,43 +175,43 @@ namespace ConsoleRenderingFramework
         /// </summary>
         public void Override( PInfo info)
         {
-            if (this.hasBackground)
+            if (this.HasBackground)
             {
-                if (info.hasBackground)
+                if (info.HasBackground)
                 {
-                    this.background = info.background;
+                    this.Background = info.Background;
                 }
             }
             else
             {
-                this.hasBackground = info.hasBackground;
-                this.background = info.background;
+                this.HasBackground = info.HasBackground;
+                this.Background = info.Background;
             }
 
-            if (this.hasForeground)
+            if (this.HasForeground)
             {
-                if (info.hasForeground)
+                if (info.HasForeground)
                 {
-                    this.foreground = info.foreground;
+                    this.Foreground = info.Foreground;
                 }
             }
             else
             {
-                this.hasForeground = info.hasForeground;
-                this.foreground = info.foreground;
+                this.HasForeground = info.HasForeground;
+                this.Foreground = info.Foreground;
             }
 
-            if (this.hasCharacter)
+            if (this.HasCharacter)
             {
-                if (info.hasCharacter)
+                if (info.HasCharacter)
                 {
-                    this.character = info.character;
+                    this.Character = info.Character;
                 }
             }
             else
             {
-                this.hasCharacter = info.hasCharacter;
-                this.character = info.character;
+                this.HasCharacter = info.HasCharacter;
+                this.Character = info.Character;
             }
         }
         public PInfo Copy()
@@ -220,6 +220,37 @@ namespace ConsoleRenderingFramework
             n.Override(this);
             return n;
         }
+        public override bool Equals(object obj)
+        {
+            if (obj is PInfo)
+            {
+                PInfo t = obj as PInfo;
+                if (t.HasBackground == HasBackground)
+                {
+                    if (t.HasBackground== true && t.Background != Background)
+                    {
+                        return false;
+                    }
+                }
+                if (t.HasForeground == HasForeground)
+                {
+                    if (t.HasForeground == true && t.Foreground != Foreground)
+                    {
+                        return false;
+                    }
+                }
+                if (t.HasCharacter == HasCharacter)
+                {
+                    if (t.HasCharacter == true && t.Character != Character)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+            return false;
+        }
     }
     public static class PInfoUtil
     {
@@ -227,7 +258,7 @@ namespace ConsoleRenderingFramework
         {
             if (data == null)
             {
-                data = new PInfo() { hasBackground = false, hasCharacter = false, hasForeground = false };
+                data = new PInfo() { HasBackground = false, HasCharacter = false, HasForeground = false };
             }
             for (int x = 0; x < info.GetLength(0); x++)
             {
@@ -235,12 +266,12 @@ namespace ConsoleRenderingFramework
                 {
                     info[x, y] = new PInfo()
                     {
-                        background = data.background,
-                        hasBackground = data.hasBackground,
-                        character = data.character,
-                        hasCharacter = data.hasCharacter,
-                        foreground = data.foreground,
-                        hasForeground = data.hasForeground
+                        Background = data.Background,
+                        HasBackground = data.HasBackground,
+                        Character = data.Character,
+                        HasCharacter = data.HasCharacter,
+                        Foreground = data.Foreground,
+                        HasForeground = data.HasForeground
                     };
                 }
             }
@@ -255,62 +286,45 @@ namespace ConsoleRenderingFramework
                 }
             }
         }
-        public static Brush getPInfoBrush(PInfo pi)
+        public static Brush GetPInfoBrush(PInfo pi)
         {
-            switch (pi.background)
+            switch (pi.Background)
             {
                 case ConsoleColor.Black:
                     return Brushes.Black;
-                    break;
                 case ConsoleColor.DarkBlue:
                     return Brushes.DarkBlue;
-                    break;
                 case ConsoleColor.DarkGreen:
                     return Brushes.DarkGreen;
-                    break;
                 case ConsoleColor.DarkCyan:
                     return Brushes.DarkCyan;
-                    break;
                 case ConsoleColor.DarkRed:
                     return Brushes.DarkRed;
-                    break;
                 case ConsoleColor.DarkMagenta:
                     return Brushes.DarkMagenta;
-                    break;
                 case ConsoleColor.DarkYellow:
                     return Brushes.Yellow;
-                    break;
                 case ConsoleColor.Gray:
                     return Brushes.Gray;
-                    break;
                 case ConsoleColor.DarkGray:
                     return Brushes.DarkGray;
-                    break;
                 case ConsoleColor.Blue:
                     return Brushes.Blue;
-                    break;
                 case ConsoleColor.Green:
                     return Brushes.Green;
-                    break;
                 case ConsoleColor.Cyan:
                     return Brushes.Cyan;
-                    break;
                 case ConsoleColor.Red:
                     return Brushes.Red;
-                    break;
                 case ConsoleColor.Magenta:
                     return Brushes.Magenta;
-                    break;
                 case ConsoleColor.Yellow:
                     return Brushes.LightYellow;
-                    break;
                 case ConsoleColor.White:
                     return Brushes.White;
-                    break;
                 default:
                     return Brushes.White;
-                    break;
             }
-        }        
+        }         
     }
 }

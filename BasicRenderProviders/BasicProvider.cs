@@ -17,17 +17,17 @@ namespace BasicRenderProviders
                 for (int y = 0; y < height; y++)
                 {
                     data[i, y] = new PInfo();
-                    if (pi.hasForeground)
+                    if (pi.HasForeground)
                     {
-                        data[i, y].SetFg(pi.foreground);
+                        data[i, y].SetFg(pi.Foreground);
                     }
-                    if (pi.hasBackground)
+                    if (pi.HasBackground)
                     {
-                        data[i, y].SetBg(pi.background);
+                        data[i, y].SetBg(pi.Background);
                     }
-                    if (pi.hasCharacter)
+                    if (pi.HasCharacter)
                     {
-                        data[i, y].SetC(pi.character);
+                        data[i, y].SetC(pi.Character);
                     }
                 }
             }
@@ -124,9 +124,9 @@ namespace BasicRenderProviders
             {
                 PInfo[,] info;
 
-                if (look.hasBackground)
+                if (look.HasBackground)
                 {
-                    info = getInked(MaxLength, 1, new PInfo().SetBg(look.background));
+                    info = getInked(MaxLength, 1, new PInfo().SetBg(look.Background));
                 }
                 else
                 {
@@ -141,7 +141,7 @@ namespace BasicRenderProviders
                     foreach (var c in item.content)
                     {
                         info[i, 0].SetC(c);
-                        info[i, 0].SetFg(look.foreground);
+                        info[i, 0].SetFg(look.Foreground);
                         i++;
                     }
                     if (i<MaxLength)

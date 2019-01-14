@@ -25,11 +25,11 @@ namespace Doom
         {
             if (inConsole)
             {
-                startGMU();
+                StartGMU();
             }
             else
             {
-                startGMUF();
+                StartGMUF();
             }
 
 
@@ -92,7 +92,7 @@ namespace Doom
             manager.Player.y_1 += yDif;
             manager.Player.y_2 += yDif;
         }
-        public static void startGMU()
+        public static void StartGMU()
         {
             GMU gmu = new GMU(width, height);
             MultiSplitScreenManager sm = new MultiSplitScreenManager(gmu.PlacePixels, height, width);
@@ -158,7 +158,7 @@ namespace Doom
 
             //Console.ReadKey(true);
         }
-        public static void startGMUF()
+        public static void StartGMUF()
         {
             GMUF gmu = new GMUF(height, width);
             Window w = new Window();

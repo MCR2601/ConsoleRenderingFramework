@@ -20,16 +20,16 @@ namespace ConsoleRenderingFramework
         protected int IdleCursorY = 0;
 
         protected PInfo[,] ScreenBuffer;
-        //PInfo[,] Screen;
+        protected PInfo[,] CurrentScreen;
         /// <summary>
         /// Just creates new Arrays
         /// </summary>
         protected void CreateScreen()
         {
             ScreenBuffer = new PInfo[width,height];
-            //Screen = new PInfo[width, height];
-            ScreenBuffer.Populate(new PInfo() { hasBackground = false, hasCharacter = false, hasForeground = false });
-            //Screen.Populate(new PInfo() { hasBackground = false, hasCharacter = false, hasForeground = false });
+            CurrentScreen = new PInfo[width, height];
+            ScreenBuffer.Populate(new PInfo() { HasBackground = false, HasCharacter = false, HasForeground = false });
+            CurrentScreen.Populate(new PInfo() { HasBackground = false, HasCharacter = false, HasForeground = false });
         }
 
 
@@ -85,7 +85,11 @@ namespace ConsoleRenderingFramework
                     //{
                     if (ScreenBuffer[x, y].isChanged == true)
                     {
-                        PrintPixel(y, x);
+                        if (!ScreenBuffer[x,y].Equals(CurrentScreen[x,y]))
+                        {
+                            PrintPixel(y, x);
+                            CurrentScreen[x, y].Override(ScreenBuffer[x, y]);
+                        }                       
                         ScreenBuffer[x, y].isChanged = false;
                         changedPixels++;
                     }
@@ -131,8 +135,5 @@ namespace ConsoleRenderingFramework
                 }
             }
         }
-        
-        
-
     }
 }

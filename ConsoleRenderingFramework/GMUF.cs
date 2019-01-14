@@ -28,7 +28,7 @@ namespace ConsoleRenderingFramework
         protected override void PrintPixel(int y, int x)
         {
             PInfo pi = ScreenBuffer[x, y];
-            Brush b = PInfoUtil.getPInfoBrush(pi);
+            Brush b = PInfoUtil.GetPInfoBrush(pi);
 
             g.FillRectangle(b, new Rectangle(x * pixelSize, y * pixelSize, pixelSize, pixelSize));
 

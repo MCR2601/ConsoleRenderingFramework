@@ -117,5 +117,30 @@ namespace BasicScreenManagerPackage
             }
         }
 
+        public Rectangle GetPositionOf(IRenderingApplication app)
+        {
+            if (SplitScreens.ContainsKey(app))
+            {
+                return SplitScreens[app].Item1;
+            }
+            return new Rectangle();
+        }
+        public void SetPositionOf(IRenderingApplication app, Rectangle rec)
+        {
+            if (SplitScreens.ContainsKey(app))
+            {
+                SplitScreens[app] = new Tuple<Rectangle, int>(rec, SplitScreens[app].Item2);
+            }
+        }
+        public void TranslatePositionOf(IRenderingApplication app, Point p)
+        {
+            if (SplitScreens.ContainsKey(app))
+            {
+                Rectangle rec = SplitScreens[app].Item1;
+                SplitScreens[app] = new Tuple<Rectangle, int>(new Rectangle(rec.X + p.X, rec.Y + p.Y, rec.Width, rec.Height), SplitScreens[app].Item2);
+            }
+        }
+
+
     }
 }

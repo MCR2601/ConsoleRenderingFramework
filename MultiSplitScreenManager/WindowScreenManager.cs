@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CardGame
+namespace BasicScreenManagerPackage
 {
     /// <summary>
     /// The WindowScreenManager has a Name and multiple Textboxes
     /// </summary>
-    class WindowScreenManager : IRenderingApplication, IScreenManager
+    public class WindowScreenManager : IRenderingApplication, IScreenManager
     {
         public int width { get ; set ; }
         public int height { get ; set ; }

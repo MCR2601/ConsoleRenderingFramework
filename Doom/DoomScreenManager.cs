@@ -31,48 +31,48 @@ namespace Doom
                 {
                     new PInfo(){ },
                     new PInfo(){ },
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true },
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true },
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true },
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true },
                     new PInfo(){ },
                     new PInfo(){ }
                 },
                 {
                     new PInfo(){ },
                     new PInfo(){},
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true },
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true },
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true },
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true },
                     new PInfo(){ },
                     new PInfo(){  }
                 },
                 {
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true },
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true },
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true },
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true },
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true },
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true }
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true },
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true },
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true },
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true },
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true },
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true }
                 },
                 {
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true },
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true },
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true },
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true },
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true },
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true }
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true },
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true },
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true },
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true },
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true },
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true }
                 },
                 {
                     new PInfo(){ },
                     new PInfo(){ },
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true },
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true },
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true },
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true },
                     new PInfo(){ },
                     new PInfo(){}
                 },
                 {
                     new PInfo(){ },
                     new PInfo(){},
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true },
-                    new PInfo(){ background = ConsoleColor.DarkGreen, hasBackground = true },
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true },
+                    new PInfo(){ Background = ConsoleColor.DarkGreen, HasBackground = true },
                     new PInfo(){ },
                     new PInfo(){ }
                 }
@@ -86,13 +86,13 @@ namespace Doom
 
         List<Tuple<Line, PInfo>> allLines = new List<Tuple<Line, PInfo>>()
         {
-            new Tuple<Line,PInfo>(new Line(-2,-2,2,-2),new PInfo(){ hasBackground = true, background = ConsoleColor.Yellow }),
-            new Tuple<Line, PInfo>(new Line(1,4,2,4),new PInfo(){hasBackground = true, background = ConsoleColor.Cyan}),
-            new Tuple<Line, PInfo>(new Line(1,5,2,5),new PInfo(){hasBackground = true, background = ConsoleColor.Cyan}),
-            new Tuple<Line, PInfo>(new Line(1,4,1,5),new PInfo(){hasBackground = true, background = ConsoleColor.DarkCyan}),
-            new Tuple<Line,PInfo>(new Line(-2,-2,-2,10),new PInfo(){ hasBackground = true, background = ConsoleColor.Blue }),
-            new Tuple<Line,PInfo>(new Line(2,-2,2,10),new PInfo(){ hasBackground = true, background = ConsoleColor.Blue}),
-            new Tuple<Line,PInfo>(new Line(-2,10,2,10),new PInfo(){ hasBackground = true, background = ConsoleColor.Yellow}),
+            new Tuple<Line,PInfo>(new Line(-2,-2,2,-2),new PInfo(){ HasBackground = true, Background = ConsoleColor.Yellow }),
+            new Tuple<Line, PInfo>(new Line(1,4,2,4),new PInfo(){HasBackground = true, Background = ConsoleColor.Cyan}),
+            new Tuple<Line, PInfo>(new Line(1,5,2,5),new PInfo(){HasBackground = true, Background = ConsoleColor.Cyan}),
+            new Tuple<Line, PInfo>(new Line(1,4,1,5),new PInfo(){HasBackground = true, Background = ConsoleColor.DarkCyan}),
+            new Tuple<Line,PInfo>(new Line(-2,-2,-2,10),new PInfo(){ HasBackground = true, Background = ConsoleColor.Blue }),
+            new Tuple<Line,PInfo>(new Line(2,-2,2,10),new PInfo(){ HasBackground = true, Background = ConsoleColor.Blue}),
+            new Tuple<Line,PInfo>(new Line(-2,10,2,10),new PInfo(){ HasBackground = true, Background = ConsoleColor.Yellow}),
         };
 
         public DoomScreenManager(DrawEvent DrawHirachy, int w, int h)
@@ -112,13 +112,13 @@ namespace Doom
                 pattern = new PInfo[,]
                 {
                     {
-                        new PInfo(){hasBackground = true, background = ConsoleColor.Red},
-                        new PInfo(){hasBackground = true, background = ConsoleColor.Gray},
+                        new PInfo(){HasBackground = true, Background = ConsoleColor.Red},
+                        new PInfo(){HasBackground = true, Background = ConsoleColor.Gray},
                         //new PInfo(){hasBackground = true, background = ConsoleColor.Black}
                     },
                     {
-                        new PInfo(){hasBackground = true, background = ConsoleColor.White},
-                        new PInfo(){hasBackground = true, background = ConsoleColor.Black},
+                        new PInfo(){HasBackground = true, Background = ConsoleColor.White},
+                        new PInfo(){HasBackground = true, Background = ConsoleColor.Black},
                         //new PInfo(){hasBackground = true, background = ConsoleColor.White}
                     }/*,
                     {
@@ -257,7 +257,7 @@ namespace Doom
                 pattern = new PInfo[,]
                 {
                         {
-                            new PInfo(){ hasBackground = true,background = ConsoleColor.Black}
+                            new PInfo(){ HasBackground = true,Background = ConsoleColor.Black}
                         }
                 }
                 
@@ -295,7 +295,7 @@ namespace Doom
             // now calculate the number of pixels until first contact with a wall
             bool wallReached = false;
             int inst = 0;
-            PInfo wallLook = new PInfo() { hasBackground = true, background = ConsoleColor.Black };
+            PInfo wallLook = new PInfo() { HasBackground = true, Background = ConsoleColor.Black };
 
             while (!wallReached && inst * 0.01 < MAXDRAWDIST)
             {
@@ -404,52 +404,52 @@ namespace Doom
         {
             // This Labyrinth has a specific colorsceme
             // entrance: 4x4 area
-            new Tuple<Line, PInfo>(new Line(-2,-2,-2,2),new PInfo(){hasBackground = true, background = labyrinthVertical }),
-            new Tuple<Line, PInfo>(new Line(-2,-2,2,-2),new PInfo(){hasBackground = true, background =  labyrinthHorizontal}),
-            new Tuple<Line, PInfo>(new Line(-2,2,-1,2),new PInfo(){hasBackground = true, background =  labyrinthHorizontal}),
-            new Tuple<Line, PInfo>(new Line(1,2,2,2),new PInfo(){hasBackground = true, background =  labyrinthHorizontal}),
-            new Tuple<Line, PInfo>(new Line(2,-2,2,2),new PInfo(){hasBackground = true, background =  labyrinthVertical}),
+            new Tuple<Line, PInfo>(new Line(-2,-2,-2,2),new PInfo(){HasBackground = true, Background = labyrinthVertical }),
+            new Tuple<Line, PInfo>(new Line(-2,-2,2,-2),new PInfo(){HasBackground = true, Background =  labyrinthHorizontal}),
+            new Tuple<Line, PInfo>(new Line(-2,2,-1,2),new PInfo(){HasBackground = true, Background =  labyrinthHorizontal}),
+            new Tuple<Line, PInfo>(new Line(1,2,2,2),new PInfo(){HasBackground = true, Background =  labyrinthHorizontal}),
+            new Tuple<Line, PInfo>(new Line(2,-2,2,2),new PInfo(){HasBackground = true, Background =  labyrinthVertical}),
             
             // first fork 
-            new Tuple<Line, PInfo>(new Line(-4,4,-1,4),new PInfo(){hasBackground = true, background = labyrinthHorizontal }),
-            new Tuple<Line, PInfo>(new Line(-1,2,-1,4),new PInfo(){hasBackground = true, background = labyrinthVertical }),
-            new Tuple<Line, PInfo>(new Line(1,2,1,4),new PInfo(){hasBackground = true, background =  labyrinthVertical}),
-            new Tuple<Line, PInfo>(new Line(1,4,5,4),new PInfo(){hasBackground = true, background = labyrinthHorizontal }),
-            new Tuple<Line, PInfo>(new Line(-2,6,3,6),new PInfo(){hasBackground = true, background = labyrinthHorizontal }),
+            new Tuple<Line, PInfo>(new Line(-4,4,-1,4),new PInfo(){HasBackground = true, Background = labyrinthHorizontal }),
+            new Tuple<Line, PInfo>(new Line(-1,2,-1,4),new PInfo(){HasBackground = true, Background = labyrinthVertical }),
+            new Tuple<Line, PInfo>(new Line(1,2,1,4),new PInfo(){HasBackground = true, Background =  labyrinthVertical}),
+            new Tuple<Line, PInfo>(new Line(1,4,5,4),new PInfo(){HasBackground = true, Background = labyrinthHorizontal }),
+            new Tuple<Line, PInfo>(new Line(-2,6,3,6),new PInfo(){HasBackground = true, Background = labyrinthHorizontal }),
 
 
             // Inside deadend
-            new Tuple<Line, PInfo>(new Line(-4,4,-4,13),new PInfo(){hasBackground = true, background =  labyrinthVertical}),
-            new Tuple<Line, PInfo>(new Line(-2,6,-2,8),new PInfo(){hasBackground = true, background =  labyrinthVertical}),
-            new Tuple<Line, PInfo>(new Line(-2,8,2,8),new PInfo(){hasBackground = true, background = labyrinthHorizontal }),
-            new Tuple<Line, PInfo>(new Line(2,8,2,10),new PInfo(){hasBackground = true, background = labyrinthVertical }),
-            new Tuple<Line, PInfo>(new Line(-2,10,2,10),new PInfo(){hasBackground = true, background =  labyrinthHorizontal}),
-            new Tuple<Line, PInfo>(new Line(-2,10,-2,11),new PInfo(){hasBackground = true, background = labyrinthVertical }),
+            new Tuple<Line, PInfo>(new Line(-4,4,-4,13),new PInfo(){HasBackground = true, Background =  labyrinthVertical}),
+            new Tuple<Line, PInfo>(new Line(-2,6,-2,8),new PInfo(){HasBackground = true, Background =  labyrinthVertical}),
+            new Tuple<Line, PInfo>(new Line(-2,8,2,8),new PInfo(){HasBackground = true, Background = labyrinthHorizontal }),
+            new Tuple<Line, PInfo>(new Line(2,8,2,10),new PInfo(){HasBackground = true, Background = labyrinthVertical }),
+            new Tuple<Line, PInfo>(new Line(-2,10,2,10),new PInfo(){HasBackground = true, Background =  labyrinthHorizontal}),
+            new Tuple<Line, PInfo>(new Line(-2,10,-2,11),new PInfo(){HasBackground = true, Background = labyrinthVertical }),
             
             // Outside deadend
-            new Tuple<Line, PInfo>(new Line(3,6,3,11),new PInfo(){hasBackground = true, background = labyrinthVertical }),
-            new Tuple<Line, PInfo>(new Line(5,4,5,8),new PInfo(){hasBackground = true, background =  labyrinthVertical}),
-            new Tuple<Line, PInfo>(new Line(5,8,8,8),new PInfo(){hasBackground = true, background = labyrinthHorizontal }),
-            new Tuple<Line, PInfo>(new Line(8,8,8,10),new PInfo(){hasBackground = true, background = labyrinthVertical }),
-            new Tuple<Line, PInfo>(new Line(5,10,8,10),new PInfo(){hasBackground = true, background = labyrinthHorizontal}),
-            new Tuple<Line, PInfo>(new Line(5,10,5,13),new PInfo(){hasBackground = true, background =  labyrinthVertical}),
+            new Tuple<Line, PInfo>(new Line(3,6,3,11),new PInfo(){HasBackground = true, Background = labyrinthVertical }),
+            new Tuple<Line, PInfo>(new Line(5,4,5,8),new PInfo(){HasBackground = true, Background =  labyrinthVertical}),
+            new Tuple<Line, PInfo>(new Line(5,8,8,8),new PInfo(){HasBackground = true, Background = labyrinthHorizontal }),
+            new Tuple<Line, PInfo>(new Line(8,8,8,10),new PInfo(){HasBackground = true, Background = labyrinthVertical }),
+            new Tuple<Line, PInfo>(new Line(5,10,8,10),new PInfo(){HasBackground = true, Background = labyrinthHorizontal}),
+            new Tuple<Line, PInfo>(new Line(5,10,5,13),new PInfo(){HasBackground = true, Background =  labyrinthVertical}),
 
             // last room
-            new Tuple<Line, PInfo>(new Line(-2,11,3,11),new PInfo(){hasBackground = true, background = labyrinthHorizontal }),
-            new Tuple<Line, PInfo>(new Line(-4,13,-2,13),new PInfo(){hasBackground = true, background = labyrinthHorizontal }),
-            new Tuple<Line, PInfo>(new Line(0,13,5,13),new PInfo(){hasBackground = true, background = labyrinthHorizontal }),
-            new Tuple<Line, PInfo>(new Line(-3,15,-3,17),new PInfo(){hasBackground = true, background =  labyrinthVertical}),
-            new Tuple<Line, PInfo>(new Line(-3,17,1,17),new PInfo(){hasBackground = true, background =  labyrinthHorizontal}),
-            new Tuple<Line, PInfo>(new Line(1,15,1,17),new PInfo(){hasBackground = true, background = labyrinthVertical }),
+            new Tuple<Line, PInfo>(new Line(-2,11,3,11),new PInfo(){HasBackground = true, Background = labyrinthHorizontal }),
+            new Tuple<Line, PInfo>(new Line(-4,13,-2,13),new PInfo(){HasBackground = true, Background = labyrinthHorizontal }),
+            new Tuple<Line, PInfo>(new Line(0,13,5,13),new PInfo(){HasBackground = true, Background = labyrinthHorizontal }),
+            new Tuple<Line, PInfo>(new Line(-3,15,-3,17),new PInfo(){HasBackground = true, Background =  labyrinthVertical}),
+            new Tuple<Line, PInfo>(new Line(-3,17,1,17),new PInfo(){HasBackground = true, Background =  labyrinthHorizontal}),
+            new Tuple<Line, PInfo>(new Line(1,15,1,17),new PInfo(){HasBackground = true, Background = labyrinthVertical }),
             // angled
-            new Tuple<Line, PInfo>(new Line(-2,13,-3,15),new PInfo(){hasBackground = true, background = labyrinthSpecial2 }),
-            new Tuple<Line, PInfo>(new Line(0,13,1,15),new PInfo(){hasBackground = true, background = labyrinthSpecial2 }),
+            new Tuple<Line, PInfo>(new Line(-2,13,-3,15),new PInfo(){HasBackground = true, Background = labyrinthSpecial2 }),
+            new Tuple<Line, PInfo>(new Line(0,13,1,15),new PInfo(){HasBackground = true, Background = labyrinthSpecial2 }),
 
             // goal
-            new Tuple<Line, PInfo>(new Line(-1.5,15,-1.5,16),new PInfo(){hasBackground = true, background =  labyrinthSpecial1}),
-            new Tuple<Line, PInfo>(new Line(-1.5,16,-0.5,16),new PInfo(){hasBackground = true, background =  labyrinthSpecial1}),
-            new Tuple<Line, PInfo>(new Line(-1.5,15,-0.5,15),new PInfo(){hasBackground = true, background =  labyrinthSpecial1}),
-            new Tuple<Line, PInfo>(new Line(-0.5,15,-0.5,16),new PInfo(){hasBackground = true, background =  labyrinthSpecial1})
+            new Tuple<Line, PInfo>(new Line(-1.5,15,-1.5,16),new PInfo(){HasBackground = true, Background =  labyrinthSpecial1}),
+            new Tuple<Line, PInfo>(new Line(-1.5,16,-0.5,16),new PInfo(){HasBackground = true, Background =  labyrinthSpecial1}),
+            new Tuple<Line, PInfo>(new Line(-1.5,15,-0.5,15),new PInfo(){HasBackground = true, Background =  labyrinthSpecial1}),
+            new Tuple<Line, PInfo>(new Line(-0.5,15,-0.5,16),new PInfo(){HasBackground = true, Background =  labyrinthSpecial1})
 
 
         };

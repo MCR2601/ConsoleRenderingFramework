@@ -39,7 +39,7 @@ namespace BasicScreenManagerPackage
         /// </summary>
         public void Render()
         {
-            app.Render();
+            app?.Render();
         }
         /// <summary>
         /// add an app to render in this screen

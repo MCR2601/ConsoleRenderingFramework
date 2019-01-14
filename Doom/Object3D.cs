@@ -9,7 +9,7 @@ namespace Doom
 {
     class Object3D : IRenderable
     {
-        public string name;
+        //public string name;
         public bool isTransparent { get ; set; }
         /// <summary>
         /// this is the pattern for the object
@@ -66,7 +66,7 @@ namespace Doom
             {
                 if (y < Bottom)
                 {
-                    data[0, y].Override(new PInfo() { hasBackground = true, background = ConsoleColor.Gray});
+                    data[0, y].Override(new PInfo() { HasBackground = true, Background = ConsoleColor.Gray});
                 }
                 else
                 {
@@ -79,7 +79,7 @@ namespace Doom
                     }
                     else
                     {
-                        data[0, y].Override(new PInfo() { hasBackground = true, background = ConsoleColor.DarkGray });
+                        data[0, y].Override(new PInfo() { HasBackground = true, Background = ConsoleColor.DarkGray });
                     }
                 }
             }
