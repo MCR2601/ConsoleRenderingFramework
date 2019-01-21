@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ConsoleRenderingFramework;
-using BasicScreenManagerPackage;
 using System.Diagnostics;
 using System.Windows.Forms;
+using ConsoleRenderingFramework.BasicScreenManagerPackage;
 
 namespace Doom
 {

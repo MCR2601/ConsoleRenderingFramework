@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ConsoleRenderingFramework;
 using System.Drawing;
 
-namespace BasicScreenManagerPackage
+namespace ConsoleRenderingFramework.BasicScreenManagerPackage
 {
     /// <summary>
     /// <see cref="IScreenManager"/> that covers whole screen with 1 <see cref="IRenderingApplication"/>

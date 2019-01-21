@@ -1,12 +1,13 @@
-﻿using BasicRenderProviders;
+﻿
 using ConsoleRenderingFramework;
+using ConsoleRenderingFramework.RenderProviders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BasicScreenManagerPackage
+namespace ConsoleRenderingFramework.BasicScreenManagerPackage
 {
     /// <summary>
     /// The WindowScreenManager has a Name and multiple Textboxes
@@ -81,7 +82,7 @@ namespace BasicScreenManagerPackage
                     break;
             }
 
-            PInfo[,] images = BasicRenderProviders.BasicProvider.TextToPInfo(box.Content, box.Width, box.Heigth, box.Style);
+            PInfo[,] images = BasicProvider.TextToPInfo(box.Content, box.Width, box.Heigth, box.Style);
 
             App_DrawScreen(images, posX, posY, this);
         }

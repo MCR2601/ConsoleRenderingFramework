@@ -32,6 +32,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BasicRenderProviders">
+      <HintPath>..\BasicRenderProviders\bin\Debug\BasicRenderProviders.dll</HintPath>
+    </Reference>
+    <Reference Include="BasicScreenManagerPackage">
+      <HintPath>..\MultiSplitScreenManager\bin\Debug\BasicScreenManagerPackage.dll</HintPath>
+    </Reference>
+    <Reference Include="ConsoleRenderingFramework">
+      <HintPath>..\ConsoleRenderingFramework\bin\Debug\ConsoleRenderingFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -48,24 +57,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BasicRenderProviders\BasicRenderProviders.csproj">
-      <Project>{48f2d129-2ea5-4d2a-88e4-69a87ea36e37}</Project>
-      <Name>BasicRenderProviders</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ConsoleRenderingFramework\ConsoleRenderingFramework.csproj">
-      <Project>{1e059ed0-dd63-4a1f-b334-f3adc43ab0d6}</Project>
-      <Name>ConsoleRenderingFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MultiSplitScreenManager\BasicScreenManagerPackage.csproj">
-      <Project>{b6e10baa-7cd3-402d-8e86-157325b8279f}</Project>
-      <Name>BasicScreenManagerPackage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utilities\Utilities.csproj">
-      <Project>{b68f7cc0-2d17-480e-9347-e0158d004494}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

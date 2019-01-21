@@ -1,6 +1,4 @@
-﻿using BasicRenderProviders;
-using BasicScreenManagerPackage;
-using ConsoleRenderingFramework;
+﻿using ConsoleRenderingFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +8,8 @@ using System.Drawing;
 using Gma.System.MouseKeyHook;
 using System.Windows.Input;
 using System.Threading;
+using ConsoleRenderingFramework.BasicScreenManagerPackage;
+using ConsoleRenderingFramework.RenderProviders;
 
 namespace Pong
 {
