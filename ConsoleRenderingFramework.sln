@@ -29,6 +29,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugSystem", "DebugSystem\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtherTesting", "OtherTesting\OtherTesting.csproj", "{A4BE71BF-F6C6-45DA-A3C0-DBC472126DBE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRFAnalyticsPackage", "CRFAnalyticsPackage\CRFAnalyticsPackage.csproj", "{5F637ED6-92A6-4A78-B4C7-6F0FE897B64B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRFInput", "CRFInput\CRFInput.csproj", "{52A735AC-7405-4398-9C6D-0C610FC305BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +79,14 @@ Global
 		{A4BE71BF-F6C6-45DA-A3C0-DBC472126DBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4BE71BF-F6C6-45DA-A3C0-DBC472126DBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4BE71BF-F6C6-45DA-A3C0-DBC472126DBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F637ED6-92A6-4A78-B4C7-6F0FE897B64B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F637ED6-92A6-4A78-B4C7-6F0FE897B64B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F637ED6-92A6-4A78-B4C7-6F0FE897B64B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F637ED6-92A6-4A78-B4C7-6F0FE897B64B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52A735AC-7405-4398-9C6D-0C610FC305BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52A735AC-7405-4398-9C6D-0C610FC305BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52A735AC-7405-4398-9C6D-0C610FC305BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52A735AC-7405-4398-9C6D-0C610FC305BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

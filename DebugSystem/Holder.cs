@@ -42,5 +42,10 @@ namespace ConsoleRenderingFramework.Debug
         {
             Console.WriteLine((Name + ":").PadRight(PadName) + value);
         }
+
+        public static implicit operator T(Holder<T> h)
+        {
+            return h.value;
+        }
     }
 }
