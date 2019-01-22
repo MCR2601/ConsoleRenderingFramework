@@ -124,9 +124,9 @@ namespace ConsoleRenderingFramework
             int xScreenlength = ScreenBuffer.GetLength(0);
             int yScreenlength = ScreenBuffer.GetLength(1);
 
-            for (int x = xPos; x < xPos+xlength; x++)
+            for (int x = Math.Max(xPos,0); x < xPos+xlength; x++)
             {
-                for (int y = yPos; y < yPos+ylength; y++)
+                for (int y = Math.Max(0,yPos); y < yPos+ylength; y++)
                 {
                     if (x < xScreenlength && y < yScreenlength)
                     {

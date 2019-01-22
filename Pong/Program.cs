@@ -42,6 +42,8 @@ namespace Pong
 
             WindowScreenManager Ball = new WindowScreenManager(1, 1, Screen.App_DrawScreen, new PInfo().SetBg(ConsoleColor.White));
 
+            
+
 
             Screen.AddScreen(p1Thing, new Rectangle(1, 18, 1, 4),1);
             Screen.AddScreen(p2Thing, new Rectangle(118, 18, 1, 4),1);
