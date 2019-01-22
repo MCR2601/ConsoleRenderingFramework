@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardGame", "CardGame\CardGa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pong", "Pong\Pong.csproj", "{2CE12880-AE9D-4CBA-A947-362C0A2F4305}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugSystem", "DebugSystem\DebugSystem.csproj", "{63C4E585-15DF-4765-B8F1-72BF5797187A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtherTesting", "OtherTesting\OtherTesting.csproj", "{A4BE71BF-F6C6-45DA-A3C0-DBC472126DBE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +67,14 @@ Global
 		{2CE12880-AE9D-4CBA-A947-362C0A2F4305}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CE12880-AE9D-4CBA-A947-362C0A2F4305}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CE12880-AE9D-4CBA-A947-362C0A2F4305}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63C4E585-15DF-4765-B8F1-72BF5797187A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63C4E585-15DF-4765-B8F1-72BF5797187A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63C4E585-15DF-4765-B8F1-72BF5797187A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63C4E585-15DF-4765-B8F1-72BF5797187A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4BE71BF-F6C6-45DA-A3C0-DBC472126DBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4BE71BF-F6C6-45DA-A3C0-DBC472126DBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4BE71BF-F6C6-45DA-A3C0-DBC472126DBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4BE71BF-F6C6-45DA-A3C0-DBC472126DBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

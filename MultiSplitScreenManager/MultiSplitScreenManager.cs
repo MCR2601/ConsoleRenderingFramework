@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using ConsoleRenderingFramework;
 using System.Drawing;
-using BasicRenderProviders;
+using ConsoleRenderingFramework.RenderProviders;
 
-namespace BasicScreenManagerPackage
+namespace ConsoleRenderingFramework.BasicScreenManagerPackage
 {
     public class MultiSplitScreenManager : IRenderingApplication, IScreenManager
     {

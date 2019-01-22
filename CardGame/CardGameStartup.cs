@@ -1,12 +1,11 @@
-﻿using BasicScreenManagerPackage;
-using ConsoleRenderingFramework;
-using BasicRenderProviders;
+﻿using ConsoleRenderingFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using ConsoleRenderingFramework.BasicScreenManagerPackage;
+using ConsoleRenderingFramework.RenderProviders;
 
 namespace CardGame
 {

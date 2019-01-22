@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ConsoleRenderingFramework;
 
-namespace BasicRenderProviders
+namespace ConsoleRenderingFramework.RenderProviders
 {
     public static class BasicProvider
     {

@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6CD22E3C-13A3-4D0C-8618-72116EDF108B}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>Doom</RootNamespace>
-    <AssemblyName>Doom</AssemblyName>
+    <ProjectGuid>{63C4E585-15DF-4765-B8F1-72BF5797187A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DebugSystem</RootNamespace>
+    <AssemblyName>DebugSystem</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,13 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BasicScreenManagerPackage">
-      <HintPath>..\MultiSplitScreenManager\bin\Debug\BasicScreenManagerPackage.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,30 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DoomScreenManager.cs" />
-    <Compile Include="IRenderable.cs" />
-    <Compile Include="Line.cs" />
-    <Compile Include="Object3D.cs" />
-    <Compile Include="ObjectSprite.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="ClassicDebugger.cs" />
+    <Compile Include="Holder.cs" />
+    <Compile Include="HolderT.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SplitRenderer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BasicRenderProviders\BasicRenderProviders.csproj">
-      <Project>{48f2d129-2ea5-4d2a-88e4-69a87ea36e37}</Project>
-      <Name>BasicRenderProviders</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ConsoleRenderingFramework\ConsoleRenderingFramework.csproj">
-      <Project>{1e059ed0-dd63-4a1f-b334-f3adc43ab0d6}</Project>
-      <Name>ConsoleRenderingFramework</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
