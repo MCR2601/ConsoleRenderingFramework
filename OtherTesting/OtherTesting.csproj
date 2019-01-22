@@ -49,6 +49,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CRFInput\CRFInput.csproj">
+      <Project>{52a735ac-7405-4398-9c6d-0c610fc305bd}</Project>
+      <Name>CRFInput</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DebugSystem\DebugSystem.csproj">
       <Project>{63c4e585-15df-4765-b8f1-72bf5797187a}</Project>
       <Name>DebugSystem</Name>
