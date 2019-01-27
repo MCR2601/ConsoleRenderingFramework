@@ -21,7 +21,7 @@ namespace OtherTesting
             Holder<int> top = new Holder<int>("top", 0, 10);
             Holder<int> w = new Holder<int>("with", 0, 10);
             Holder<int> h = new Holder<int>("height", 0, 10);
-
+            HolderString s = new HolderString("---");
 
 
             debugger.Watcher.Add(x);
@@ -31,6 +31,7 @@ namespace OtherTesting
             debugger.Watcher.Add(top);
             debugger.Watcher.Add(w);
             debugger.Watcher.Add(h);
+            debugger.Watcher.Add(s);
 
             debugger.UpdateTime = 200;
             debugger.Activate();
@@ -52,6 +53,8 @@ namespace OtherTesting
                 top.value = pos.Y;
                 w.value = pos.W;
                 h.value = pos.H;
+
+                s.Value = "".PadRight(w.value-1, '-');
 
                 System.Threading.Thread.Sleep(50);
             }
