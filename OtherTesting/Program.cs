@@ -22,7 +22,7 @@ namespace OtherTesting
             Holder<int> w = new Holder<int>("with", 0, 10);
             Holder<int> h = new Holder<int>("height", 0, 10);
 
-
+            
 
             debugger.Watcher.Add(x);
             debugger.Watcher.Add(y);

@@ -13,6 +13,8 @@ namespace CardGame
     {
         static void Main(string[] args)
         {
+
+
             GMU gmu = new GMU(102, 62, 0, 0);            
             gmu.PlacePixels(BasicProvider.getInked(102, 62, new PInfo().SetBg(ConsoleColor.DarkGray)), 0, 0, null);
             gmu.PrintFrame();

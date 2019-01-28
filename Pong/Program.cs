@@ -27,6 +27,9 @@ namespace Pong
 
         static void Main(string[] args)
         {
+            Console.InputEncoding = Encoding.Unicode;
+            Console.OutputEncoding = Encoding.Unicode;
+
             GMU gmu = new GMU(120, 40, 0, 0);
 
             gmu.PlacePixels(BasicProvider.getInked(120, 60, new PInfo().SetBg(ConsoleColor.Black)), 0, 0, null);
@@ -36,8 +39,8 @@ namespace Pong
 
             
 
-            WindowScreenManager p1Thing = new WindowScreenManager(1, 4, Screen.App_DrawScreen,new PInfo().SetBg(ConsoleColor.White));
-            WindowScreenManager p2Thing = new WindowScreenManager(1, 4, Screen.App_DrawScreen,new PInfo().SetBg( ConsoleColor.White));
+            WindowScreenManager p1Thing = new WindowScreenManager(1, 4, Screen.App_DrawScreen,new PInfo().SetBg(ConsoleColor.Gray).SetC('\u2656').SetFg(ConsoleColor.Blue));
+            WindowScreenManager p2Thing = new WindowScreenManager(1, 4, Screen.App_DrawScreen,new PInfo().SetBg( ConsoleColor.Gray).SetC('\u2656').SetFg(ConsoleColor.Blue));
             WindowScreenManager background = new WindowScreenManager(120, 40, Screen.App_DrawScreen,new PInfo().SetBg(ConsoleColor.Black));
 
             WindowScreenManager Ball = new WindowScreenManager(1, 1, Screen.App_DrawScreen, new PInfo().SetBg(ConsoleColor.White));
