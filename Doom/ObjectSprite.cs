@@ -36,7 +36,7 @@ namespace Doom
         {
             double updown = 30 * Math.PI / 180;
             // calculate required height of sprite
-            // TODO: Mage the system "realistic" things further up will be visible differently than headon
+            // TODO: Make the system "realistic" things further up will be visible differently than headon
             // currently only spreading the pixels over the calculated are
             
 

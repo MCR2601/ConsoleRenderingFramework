@@ -34,8 +34,8 @@ namespace CardGame
             splitScreen.AddScreen(Test2, new System.Drawing.Rectangle(69, 8, 20, 30),1);
 
 
-            TextBox tb1 = new TextBox("Name", "Test text for some things", new PInfo().SetFg(ConsoleColor.White), 0, 0, Alignment.TopLeft, 20, 3);
-            TextBox tb2 = new TextBox("try", "Another text", new PInfo().SetFg(ConsoleColor.Red).SetBg(ConsoleColor.DarkGray), 0, 0, Alignment.BottomLeft, 20, 3);
+            TextBox tb1 = new TextBox("Name", "Test text for some things", new PInfo().SetFg(ConsoleColor.White), 0, 0, Alignment.TopLeft, 20,10);
+            TextBox tb2 = new TextBox("try", "Another text", new PInfo().SetFg(ConsoleColor.Red).SetBg(ConsoleColor.DarkGray), 0, 0, Alignment.BottomLeft, 20, 10);
 
             List<TextBox> content = new List<TextBox>();
             content.Add(tb1);
@@ -81,6 +81,10 @@ namespace CardGame
                         break;
                     case ConsoleKey.UpArrow:
                         splitScreen.TranslatePositionOf(app, new System.Drawing.Point(0, -1));
+                        break;
+                    case ConsoleKey.Enter:
+                        string input = Console.ReadLine();
+                        Test2.GetTextBox("Name").Content = input;
                         break;
                     default:
                         break;

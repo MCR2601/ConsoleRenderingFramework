@@ -17,7 +17,7 @@ namespace Doom
 
         double distPerHeigth;
         const double MAXDRAWDIST = 15;
-        static int FOV = 75;
+        static int FOV = 90;
         public Line Player = new Line(0,0,0,1);
 
         public double PlayerHeight = 1;
@@ -78,8 +78,13 @@ namespace Doom
                 }
             }
         };
-
+        /// <summary>
+        /// The line of a wall, and the sprite of that wall
+        /// </summary>
         public Dictionary<Line, Object3D> DObjectects = new Dictionary<Line, Object3D>();  
+        /// <summary>
+        /// Entity object, position
+        /// </summary>
         public Dictionary<ObjectSprite,Tuple<double,double>> SpriteObjects = new Dictionary<ObjectSprite, Tuple<double, double>>();
 
 
@@ -222,12 +227,54 @@ namespace Doom
             int inst = 0;
             //PInfo wallLook = new PInfo() { hasBackground = true, background = ConsoleColor.Black };
             bool reachedWall = false;
+
+
             while ((!reachedWall) && inst * 0.01 < MAXDRAWDIST)
             {
                 inst++;
-                look.x_2 = look.x_1 + dirX * inst * 0.01;
-                look.y_2 = look.y_1 + dirY * inst * 0.01;
+                look.x_2 = look.x_1 + dirX * MAXDRAWDIST;
+                look.y_2 = look.y_1 + dirY * MAXDRAWDIST;
+                
+                double xInt;
+                double yInt;
 
+                if (look.y_2 == 15.3)
+                {
+                    Debug.WriteLine("");
+                }
+
+                var found = visibles
+                    .Where(v => doLinesIntersect(look, v.Item1, out xInt, out yInt))
+                    .Select(i =>
+                    {
+                        double atX;
+                        double atY;
+                        doLinesIntersect(look, i.Item1, out atX, out atY);
+                        return new { Object = i, Distance = Math.Sqrt(Math.Pow(look.x_1 - atX, 2) + Math.Pow(look.y_1 - atY, 2)), XInt = atX, YInt = atY };
+                    })
+                    .ToList();
+                if (found.Count == 0)
+                {
+                    Debug.WriteLine("empty");
+                }
+                var ToRender = found
+                    .Where(f => f.Distance <= found.Where(wall => !wall.Object.Item2.isTransparent).Min(closest => closest.Distance))
+                    .OrderBy(all => -all.Distance)
+                    .ToList();
+
+                if (ToRender.Count==0)
+                {
+                    Debug.WriteLine("empty");
+                }
+
+                reachedWall = true;
+                foreach (var some in ToRender)
+                {
+                    double distFromOrigin = Math.Sqrt(Math.Pow(some.XInt - some.Object.Item1.x_1, 2) + Math.Pow(some.YInt - some.Object.Item1.y_1, 2));
+                    renderstack.Push(new Tuple<IRenderable, double, double>(some.Object.Item2, distFromOrigin, some.Distance));
+                }
+                //Debug.WriteLine(ToRender.Count);
+                /*
                 foreach (var item in visibles)
                 {
                     double xIntersect;
@@ -235,18 +282,20 @@ namespace Doom
                     if (doLinesIntersect(look, item.Item1, out xIntersect, out yIntersect))
                     {
 
-                        if (!renderstack.Select((x) => { return x.Item1; }).AsParallel().Contains(item.Item2))
+                        if (!renderstack.Select((x) => { return x.Item1; }).Contains(item.Item2))
                         {
                             if (!item.Item2.isTransparent)
                             {
                                 reachedWall = true;
                             }
+                            // distance from object origin
                             double distFromOrigin = Math.Sqrt(Math.Pow(xIntersect - item.Item1.x_1, 2) + Math.Pow(yIntersect - item.Item1.y_1, 2));
+                            // Object, distance from object origin, distance from camera
                             renderstack.Push(new Tuple<IRenderable, double, double>(item.Item2, distFromOrigin, inst * 0.01));
                         }
                         
                     }
-                }
+                }*/
 
             }
 
@@ -341,8 +390,11 @@ namespace Doom
 
             return new Tuple<Tuple<int, int, int>, PInfo>(new Tuple<int, int, int>(Top,Mid,Bottom), wallLook);
         }
-        private bool doLinesIntersect(Line l1, Line l2, out double posX, out double posY)
+        private bool doLinesIntersect(Line li1, Line li2, out double posX, out double posY)
         {
+            Line l1 = new Line(Math.Round(li1.x_1, 10), Math.Round(li1.y_1, 10), Math.Round(li1.x_2, 10), Math.Round(li1.y_2, 10));
+            Line l2 = new Line(Math.Round(li2.x_1, 10), Math.Round(li2.y_1, 10), Math.Round(li2.x_2, 10), Math.Round(li2.y_2, 10));
+
             double A1 = l1.y_2 - l1.y_1;
             double B1 = l1.x_1 - l1.x_2;
             double C1 = A1 * l1.x_1 + B1 * l1.y_1;
@@ -362,7 +414,10 @@ namespace Doom
             {
                 double x = (B2 * C1 - B1 * C2) / det;
                 double y = (A1 * C2 - A2 * C1) / det;
-                
+
+                x = Math.Round(x, 10);
+                y = Math.Round(y, 10);
+
                 if (Math.Min(l1.x_1,l1.x_2)<= x && x <= Math.Max(l1.x_1,l1.x_2)&& Math.Min(l1.y_1, l1.y_2) <= y && y <= Math.Max(l1.y_1, l1.y_2) && Math.Min(l2.x_1, l2.x_2) <= x && x <= Math.Max(l2.x_1, l2.x_2) && Math.Min(l2.y_1, l2.y_2) <= y && y <= Math.Max(l2.y_1, l2.y_2))
                 {
                     posX = x;

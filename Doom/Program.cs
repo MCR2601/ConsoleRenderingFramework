@@ -13,8 +13,8 @@ namespace Doom
     class Program
     {
         const double Speed = 0.3;
-        const int height = 40;
-        const int width = 60;
+        const int height = 60;
+        const int width = 120;
         const double rotation = 10 * Math.PI / 180;
 
         const bool inConsole = true;
