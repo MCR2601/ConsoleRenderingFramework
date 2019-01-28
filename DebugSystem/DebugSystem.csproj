@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="ClassicDebugger.cs" />
     <Compile Include="Holder.cs" />
+    <Compile Include="HolderString.cs" />
     <Compile Include="HolderT.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
