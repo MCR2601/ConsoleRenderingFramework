@@ -66,7 +66,7 @@ namespace Doom
             {
                 if (y < Bottom)
                 {
-                    data[0, y].Override(new PInfo() { HasBackground = true, Background = ConsoleColor.Gray});
+                    data[0, y].Override(new PInfo().SetBg(ConsoleColor.Gray));
                 }
                 else
                 {
@@ -79,7 +79,7 @@ namespace Doom
                     }
                     else
                     {
-                        data[0, y].Override(new PInfo() { HasBackground = true, Background = ConsoleColor.DarkGray });
+                        data[0, y].Override(new PInfo().SetBg(ConsoleColor.DarkGray));
                     }
                 }
             }

@@ -43,7 +43,7 @@ namespace Pong
             WindowScreenManager p2Thing = new WindowScreenManager(1, 4, Screen.App_DrawScreen,new PInfo().SetBg( ConsoleColor.Gray).SetC('\u2656').SetFg(ConsoleColor.Blue));
             WindowScreenManager background = new WindowScreenManager(120, 40, Screen.App_DrawScreen,new PInfo().SetBg(ConsoleColor.Black));
 
-            WindowScreenManager Ball = new WindowScreenManager(1, 1, Screen.App_DrawScreen, new PInfo().SetBg(ConsoleColor.White));
+            WindowScreenManager bThing = new WindowScreenManager(1, 1, Screen.App_DrawScreen, new PInfo().SetBg(ConsoleColor.White));
 
             
 
@@ -54,27 +54,34 @@ namespace Pong
 
             bool running = true;
 
+
+            Point Ball = new Point(40, 20);
+
+
             Thread thread = new Thread(() => {
                 while (running)
                 {
 
                     System.Threading.Thread.Sleep(10);
 
+                    int p1Move = 0;
+                    int p2Move = 0;
+                    #region input handeling
                     if (Keyboard.IsKeyDown(Key.W))
                     {
-                        Screen.TranslatePositionOf(p1Thing, new Point(0, -1));
+                        p1Move += -1;
                     }
                     if (Keyboard.IsKeyDown(Key.S))
                     {
-                        Screen.TranslatePositionOf(p1Thing, new Point(0, 1));
+                        p1Move += 1;
                     }
                     if (Keyboard.IsKeyDown(Key.Up))
                     {
-                        Screen.TranslatePositionOf(p2Thing, new Point(0, -1));
+                        p2Move += -1;
                     }
                     if (Keyboard.IsKeyDown(Key.Down))
                     {
-                        Screen.TranslatePositionOf(p2Thing, new Point(0, 1));
+                        p2Move += 1;
                     }
                     if (Keyboard.IsKeyDown(Key.Escape))
                     {
@@ -84,6 +91,17 @@ namespace Pong
                     {
 
                     }
+                    #endregion
+
+                    #region movement
+
+                    #endregion
+                    #region score
+
+                    #endregion
+                    #region Time
+
+                    #endregion
 
                     Screen.Render();
                     gmu.PrintFrame();
@@ -104,8 +122,5 @@ namespace Pong
         {
             distance = Math.Sqrt(Forward * Forward + Angle * Angle);
         }
-
-
-
     }
 }

@@ -13,8 +13,8 @@ namespace Doom
     class Program
     {
         const double Speed = 0.3;
-        const int height = 60;
-        const int width = 120;
+        static int height = 60;
+        static int width = 120;
         const double rotation = 10 * Math.PI / 180;
 
         const bool inConsole = true;
@@ -23,6 +23,10 @@ namespace Doom
 
         static void Main(string[] args)
         {
+            Console.ReadLine();
+            //height = Console.LargestWindowHeight-1;
+            //width = Console.LargestWindowWidth-1;
+
             if (inConsole)
             {
                 StartGMU();

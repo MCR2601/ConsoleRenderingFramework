@@ -92,7 +92,7 @@ namespace Doom
         List<Tuple<Line, PInfo>> allLines = new List<Tuple<Line, PInfo>>()
         {
             new Tuple<Line,PInfo>(new Line(-2,-2,2,-2),new PInfo(){ HasBackground = true, Background = ConsoleColor.Yellow }),
-            new Tuple<Line, PInfo>(new Line(1,4,2,4),new PInfo(){HasBackground = true, Background = ConsoleColor.Cyan}),
+            new Tuple<Line, PInfo>(new Line(2,4,1,4),new PInfo(){HasBackground = true, Background = ConsoleColor.Cyan}),
             new Tuple<Line, PInfo>(new Line(1,5,2,5),new PInfo(){HasBackground = true, Background = ConsoleColor.Cyan}),
             new Tuple<Line, PInfo>(new Line(1,4,1,5),new PInfo(){HasBackground = true, Background = ConsoleColor.DarkCyan}),
             new Tuple<Line,PInfo>(new Line(-2,-2,-2,10),new PInfo(){ HasBackground = true, Background = ConsoleColor.Blue }),
@@ -117,20 +117,20 @@ namespace Doom
                 pattern = new PInfo[,]
                 {
                     {
-                        new PInfo(){HasBackground = true, Background = ConsoleColor.Red},
+                        new PInfo(){HasBackground = true, Background = ConsoleColor.DarkGreen},
                         new PInfo(){HasBackground = true, Background = ConsoleColor.Gray},
-                        //new PInfo(){hasBackground = true, background = ConsoleColor.Black}
+                        //new PInfo(){HasBackground = true, Background = ConsoleColor.Black}
                     },
                     {
                         new PInfo(){HasBackground = true, Background = ConsoleColor.White},
                         new PInfo(){HasBackground = true, Background = ConsoleColor.Black},
-                        //new PInfo(){hasBackground = true, background = ConsoleColor.White}
+                        //new PInfo(){HasBackground = true, Background = ConsoleColor.White}
                     }/*,
                     {
-                        new PInfo(){hasBackground = true, background = ConsoleColor.Black},
-                        new PInfo(){hasBackground = true, background = ConsoleColor.White},
-                        new PInfo(){hasBackground = true, background = ConsoleColor.Black}
-                    },
+                        new PInfo(){HasBackground = true, Background = ConsoleColor.Yellow},
+                        new PInfo(){HasBackground = true, Background = ConsoleColor.Red},
+                        //new PInfo(){hasBackground = true, background = ConsoleColor.Black}
+                    }/*,
                     {
                         new PInfo(){hasBackground = true, background = ConsoleColor.White},
                         new PInfo(){hasBackground = true, background = ConsoleColor.Black},
