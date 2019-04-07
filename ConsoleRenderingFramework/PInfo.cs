@@ -10,6 +10,7 @@ namespace ConsoleRenderingFramework
     /// </summary>
     public class PInfo
     {
+
         private ConsoleColor _foreground;
         public ConsoleColor Foreground
         {
@@ -250,6 +251,19 @@ namespace ConsoleRenderingFramework
                 return true;
             }
             return false;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 1164796431;
+            hashCode = hashCode * -1521134295 + _foreground.GetHashCode();
+            hashCode = hashCode * -1521134295 + _background.GetHashCode();
+            hashCode = hashCode * -1521134295 + _character.GetHashCode();
+            hashCode = hashCode * -1521134295 + _hasForeground.GetHashCode();
+            hashCode = hashCode * -1521134295 + _hasBackground.GetHashCode();
+            hashCode = hashCode * -1521134295 + _hasCharacter.GetHashCode();
+            hashCode = hashCode * -1521134295 + isChanged.GetHashCode();
+            return hashCode;
         }
     }
     public static class PInfoUtil

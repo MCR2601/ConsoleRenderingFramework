@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRFAnalyticsPackage", "CRFA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRFInput", "CRFInput\CRFInput.csproj", "{52A735AC-7405-4398-9C6D-0C610FC305BD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayMarching", "RayMarching\RayMarching.csproj", "{61BC9D12-4108-4C9C-AD73-CF6C09BC8EDC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{52A735AC-7405-4398-9C6D-0C610FC305BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52A735AC-7405-4398-9C6D-0C610FC305BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52A735AC-7405-4398-9C6D-0C610FC305BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61BC9D12-4108-4C9C-AD73-CF6C09BC8EDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61BC9D12-4108-4C9C-AD73-CF6C09BC8EDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61BC9D12-4108-4C9C-AD73-CF6C09BC8EDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61BC9D12-4108-4C9C-AD73-CF6C09BC8EDC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
