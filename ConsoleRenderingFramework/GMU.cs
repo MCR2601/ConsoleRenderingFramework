@@ -72,7 +72,7 @@ namespace ConsoleRenderingFramework
         /// Prints all new Pixels to the Console
         /// Moves new Screen to the Screen
         /// </summary>
-        public void PrintFrame()
+        public virtual void PrintFrame()
         {
             //List<PositionedPInfo> toPrint = new List<PositionedPInfo>();
             int changedPixels = 0;

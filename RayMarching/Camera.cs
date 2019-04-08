@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleRenderingFramework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,19 +7,26 @@ using System.Threading.Tasks;
 
 namespace RayMarching
 {
-    class Camera
+    public class Camera
     {
         public Vector3 Position;
         public Vector3 ViewDirection;
+
+        public double AngleLenght = 10;
+
+        public double MaxLength = 100;
+        public double LightHeight = 10;
 
         public int ScreenHeight;
         public int ScreenWidth;
 
         public double FOV; // in degree
 
-        public double MarchPrecission = 0.5;
+        public double MarchPrecission = 0.00000001;
 
         public List<Geometry> Objects;
+
+        public ConsoleColor DefaultColor = ConsoleColor.Blue;
 
         public Camera(Vector3 position, Vector3 viewDirection, int screenHeight, int screenWidth, double fov, List<Geometry> objects)
         {
@@ -41,7 +49,6 @@ namespace RayMarching
             double radPerPixelWidth = Vector3.DegToRad(FOV) / ScreenWidth;
             double radPerPixelHeight = Vector3.DegToRad(FOV) / ScreenHeight;
 
-            double heightDist = 0.5;
 
             AngleVector viewAngle = ViewDirection.Angle;
 
@@ -49,23 +56,37 @@ namespace RayMarching
             {
                 for (int y = 0; y < pixels.GetLength(1); y++)
                 {
-                    pixels[x,y] = 
-                        new Vector3(
-                            (-ScreenWidth/2)+x,
-                            (-ScreenHeight/2)+y,
-                            0)
-                            .RotateX(viewAngle.Theta - Vector3.DegToRad(90))
-                            .RotateY(viewAngle.Phi - (ViewDirection.X==0?0:Vector3.DegToRad(90)))
-                        + (ViewDirection);
+                    //pixels[x,y] = 
+                    //    new Vector3(
+                    //        (-ScreenWidth/2)+x,
+                    //        (-ScreenHeight/2)+y,
+                    //        0);
+
+                    pixels[x, y] =
+                        new Vector3(0, 0, 1)
+                        .RotateX((radPerPixelHeight * y) - (radPerPixelHeight * ScreenHeight / 2))
+                        .RotateY((radPerPixelWidth * x) - (radPerPixelWidth * ScreenWidth / 2));
                 }
+            }
+            for (int x = 0; x < pixels.GetLength(0); x++)
+            {
+                for (int y = 0; y < pixels.GetLength(1); y++)
+                {
+
+                    Vector3 changed = (pixels[x, y].RotateX(viewAngle.Theta - Vector3.DegToRad(90))
+                           .RotateY(-(viewAngle.Phi - (ViewDirection.X == 0 && ViewDirection.Z == 0 ? 0 : Vector3.DegToRad(90))))
+                       );// + (ViewDirection.AsNormalized() * AngleLenght);
+                    pixels[x, y] = changed;
+                }
+
             }
             return pixels;
         }
 
-        public RayHit MarchRay(Vector3 rayDir)
+        public RayHit MarchRay(Vector3 rayDir,double maxRange,Vector3 startPos)
         {
             // define the current position of the ray
-            Vector3 currentPos = Position;
+            Vector3 currentPos = startPos;
 
             // check if there is no geometry too close
             Geometry Closest = null;
@@ -73,21 +94,126 @@ namespace RayMarching
 
             double totalDistance = 0;
 
-            do
-            {
-                var distances = Objects.Select(obj => new {obj = obj, distance = obj.GetDistance(currentPos)})
+            var distances = Objects.Select(obj => new { obj = obj, distance = obj.GetDistance(currentPos) })
                     .OrderBy(info => info.distance).ToList();
 
-                var c = distances.First();
+            var c = distances.First();
+
+            Closest = c.obj;
+            distance = c.distance;
+
+            double PrecissionCorrection = MarchPrecission / 3;
+
+            while (distance > MarchPrecission && totalDistance < maxRange)
+            {
+                // move the distance
+                currentPos = currentPos + (rayDir.AsNormalized() * (distance - (PrecissionCorrection/2)));
+
+                // get next closest
+                distances = Objects.Select(obj => new { obj = obj, distance = obj.GetDistance(currentPos) })
+                    .OrderBy(info => info.distance).ToList();
+
+                c = distances.First();
 
                 Closest = c.obj;
                 distance = c.distance;
+                totalDistance += distance;
+            }
 
-            } while (distance>MarchPrecission && totalDistance < 100);
-
-
+            if (distance <= MarchPrecission)
+            {
+                // we have hit an object
+                return new RayHit(currentPos, Closest, Closest.Color);
+            }
+            return new RayHit(currentPos, null, DefaultColor);
         }
 
+        public PInfo[,] RenderImage()
+        {
+            PInfo[,] image = new PInfo[ScreenWidth, ScreenHeight];
+
+            Vector3[,] rays = GetRays();
+            List<Task> tasks = new List<Task>();
+
+            for (int x = 0; x < ScreenWidth; x++)
+            {
+                for (int y = 0; y < ScreenHeight; y++)
+                {
+                    int tx = x;
+                    int ty = y;
+                    tasks.Add(Task.Run(
+                        () => {
+                            RayHit hit = MarchRay(rays[tx, ty], MaxLength, Position);
+
+                            RayHit skyHit = MarchRay(new Vector3(0, 1, 0), LightHeight - hit.Position.Y, hit.Position + new Vector3(0, MarchPrecission * 2, 0));
+
+                            image[tx, ty] = new PInfo().SetBg(skyHit.Object == null ? hit.color : Shade(hit.color));
+                        }
+                    ));
+                    
+                }
+            }
+            Task.WaitAll(tasks.ToArray());
+            return image;
+        }
+
+        public ConsoleColor Shade(ConsoleColor color)
+        {
+            switch (color)
+            {
+                case ConsoleColor.Black:
+                    return ConsoleColor.Black;
+                    break;
+                case ConsoleColor.DarkBlue:
+                    return ConsoleColor.Blue;
+                    break;
+                case ConsoleColor.DarkGreen:
+                    return ConsoleColor.Green;
+                    break;
+                case ConsoleColor.DarkCyan:
+                    return ConsoleColor.Cyan;
+                    break;
+                case ConsoleColor.DarkRed:
+                    return ConsoleColor.Red;
+                    break;
+                case ConsoleColor.DarkMagenta:
+                    return ConsoleColor.Magenta;
+                    break;
+                case ConsoleColor.DarkYellow:
+                    return ConsoleColor.Yellow;
+                    break;
+                case ConsoleColor.Gray:
+                    return ConsoleColor.DarkGray;
+                    break;
+                case ConsoleColor.DarkGray:
+                    return ConsoleColor.Black;
+                    break;
+                case ConsoleColor.Blue:
+                    return ConsoleColor.DarkBlue;
+                    break;
+                case ConsoleColor.Green:
+                    return ConsoleColor.DarkGreen;
+                    break;
+                case ConsoleColor.Cyan:
+                    return ConsoleColor.DarkCyan;
+                    break;
+                case ConsoleColor.Red:
+                    return ConsoleColor.DarkRed;
+                    break;
+                case ConsoleColor.Magenta:
+                    return ConsoleColor.DarkMagenta;
+                    break;
+                case ConsoleColor.Yellow:
+                    return ConsoleColor.DarkYellow;
+                    break;
+                case ConsoleColor.White:
+                    return ConsoleColor.Gray;
+                    break;
+                default:
+                    return ConsoleColor.Black;
+                    break;
+            }
+        }
 
 
     }

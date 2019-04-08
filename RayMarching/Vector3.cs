@@ -80,6 +80,7 @@ namespace RayMarching
 
         public double LengthS => X * X + Y * Y + Z * Z;
 
+        public Vector3 GetCopy() => new Vector3(X, Y, Z);
         public Vector3 Normalize()
         {
             double l = Length;
@@ -87,6 +88,12 @@ namespace RayMarching
             Y = Y / l;
             Z = Z / l;
             return this;
+        }
+
+        public Vector3 AsNormalized()
+        {
+            double l = Length;
+            return new Vector3(X / l, Y / l, Z / l);
         }
 
         public bool Normalized => Length == 1.0d;
@@ -142,11 +149,11 @@ namespace RayMarching
 
         public static Vector3 operator +(Vector3 a, Vector3 b)
         {
-            return new Vector3(a.X + b.X, a.Y + b.Y, a.Z + b.Y);
+            return new Vector3(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
         }
         public static Vector3 operator -(Vector3 a, Vector3 b)
         {
-            return new Vector3(a.X - b.X, a.Y - b.Y, a.Z - b.Y);
+            return new Vector3(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
         }
         public static Vector3 operator *(Vector3 a, double v)
         {

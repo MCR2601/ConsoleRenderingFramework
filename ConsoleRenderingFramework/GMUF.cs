@@ -14,7 +14,7 @@ namespace ConsoleRenderingFramework
     /// </summary>
     public class GMUF : GMU
     {
-        public Form RenderingForm;
+        public NotAConsoleWindow RenderingForm;
         Graphics g;
 
         public int pixelSize = 4;
@@ -34,12 +34,89 @@ namespace ConsoleRenderingFramework
 
         }
 
-        public void SetRederingForm(Form f)
+        public override void PrintFrame()
         {
-            RenderingForm = f;
-            g = f.CreateGraphics();
+            Bitmap map = new Bitmap(width, height);
+
+
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    if (!ScreenBuffer[x, y].Equals(CurrentScreen[x, y]))
+                    {
+                        //PrintPixel(y, x);
+                        CurrentScreen[x, y].Override(ScreenBuffer[x, y]);
+                    }
+                    ScreenBuffer[x, y].isChanged = false;
+                    map.SetPixel(x, y, ConsoleToColor(CurrentScreen[x, y].Background));
+                }
+            }
+            RenderingForm.image = map;
         }
 
+        public void SetRederingForm(NotAConsoleWindow f)
+        {
+            RenderingForm = f;
+        }
+
+        public Color ConsoleToColor(ConsoleColor cc)
+        {
+            switch (cc)
+            {
+                case ConsoleColor.Black:
+                    return Color.Black;
+                    break;
+                case ConsoleColor.DarkBlue:
+                    return Color.DarkBlue;
+                    break;
+                case ConsoleColor.DarkGreen:
+                    return Color.DarkGreen;
+                    break;
+                case ConsoleColor.DarkCyan:
+                    return Color.DarkCyan;
+                    break;
+                case ConsoleColor.DarkRed:
+                    return Color.DarkRed;
+                    break;
+                case ConsoleColor.DarkMagenta:
+                    return Color.DarkMagenta;
+                    break;
+                case ConsoleColor.DarkYellow:
+                    return Color.Yellow;
+                    break;
+                case ConsoleColor.Gray:
+                    return Color.Gray;
+                    break;
+                case ConsoleColor.DarkGray:
+                    return Color.DarkGray;
+                    break;
+                case ConsoleColor.Blue:
+                    return Color.Blue;
+                    break;
+                case ConsoleColor.Green:
+                    return Color.Green;
+                    break;
+                case ConsoleColor.Cyan:
+                    return Color.Cyan;
+                    break;
+                case ConsoleColor.Red:
+                    return Color.Red;
+                    break;
+                case ConsoleColor.Magenta:
+                    return Color.Magenta;
+                    break;
+                case ConsoleColor.Yellow:
+                    return Color.LightYellow;
+                    break;
+                case ConsoleColor.White:
+                    return Color.White;
+                    break;
+                default:
+                    return Color.White;
+                    break;
+            }
+        }
 
     }
 }

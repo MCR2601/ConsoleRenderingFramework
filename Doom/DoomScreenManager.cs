@@ -146,11 +146,7 @@ namespace Doom
             #endregion
         }
 
-
-
-
-
-
+                          
         public void App_DrawScreen(PInfo[,] information, int x, int y, IRenderingApplication sender)
         {
             DrawScreen?.Invoke(information, x, y, this);

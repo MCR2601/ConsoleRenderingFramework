@@ -11,10 +11,13 @@ namespace RayMarching
         public Vector3 Position;
         public Geometry Object;
 
-        public RayHit(Vector3 position, Geometry o)
+        public ConsoleColor color;
+
+        public RayHit(Vector3 position, Geometry @object, ConsoleColor color)
         {
             Position = position;
-            Object = o;
+            Object = @object;
+            this.color = color;
         }
     }
 }

@@ -165,15 +165,15 @@ namespace Doom
         public static void StartGMUF()
         {
             GMUF gmu = new GMUF(height, width);
-            Window w = new Window();
-            Application.EnableVisualStyles();
-            Application.Run(w);
+            NotAConsoleWindow w = new NotAConsoleWindow();
+
             Task t = new Task(() =>
             {
-                
+                Application.EnableVisualStyles();
                 Application.Run(w);
             });
             (gmu as GMUF).SetRederingForm(w);
+            
             t.Start();
             
 

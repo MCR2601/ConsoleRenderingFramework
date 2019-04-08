@@ -23,10 +23,14 @@ namespace RayMarching
 
         public virtual double GetDistance(Vector3 target)
         {
-            return (Position - target).Length;
+            return DistanceCalculator.SphereDist(target, Position);
         }
 
-
-
+        public Geometry(Vector3 position, ConsoleColor color)
+        {
+            Position = position;
+            Type = GType.Sphere;
+            Color = color;
+        }
     }
 }
