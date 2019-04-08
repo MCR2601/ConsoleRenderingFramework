@@ -31,16 +31,16 @@ namespace RayMarching
             Console.ReadLine();
             Console.Clear();
 
-            height = Console.WindowHeight - 2;
-            width = Console.WindowWidth - 2;
+            //height = Console.WindowHeight - 2;
+            //width = Console.WindowWidth - 2;
 
-            GMU gmu = new GMU(width + 2, height + 2,0,0);
+            //GMU gmu = new GMU(width + 2, height + 2,0,0);
 
             // TODO: custom size with scaled down image
-            //GMUF gmu = new GMUF(width+2, height+2);
+            GMUF gmu = new GMUF(height+2, width+2);
 
 
-            /*
+            
             NotAConsoleWindow w = new NotAConsoleWindow();
 
             Thread t = new Thread(() =>
@@ -54,7 +54,7 @@ namespace RayMarching
             t.SetApartmentState(ApartmentState.STA);
             w.EnableRender();
             t.Start();
-            */
+            
 
             MultiSplitScreenManager mssm = new MultiSplitScreenManager(gmu.PlacePixels, width, height);
             FullScreenManager screen = new FullScreenManager(width-2, height-2, null);
@@ -196,7 +196,7 @@ namespace RayMarching
             thread.SetApartmentState(ApartmentState.STA); //Set the thread to STA
             thread.Start();
             thread.Join();
-            //t.Join();
+            t.Join();
             
 
             /*

@@ -16,7 +16,7 @@ namespace ConsoleRenderingFramework
 
         public Bitmap image;
 
-
+        private bool running = false;
 
         public NotAConsoleWindow()
         {
@@ -45,11 +45,28 @@ namespace ConsoleRenderingFramework
 
         private void test_Click(object sender, EventArgs e)
         {
+            if (running)
+            {
+                return;
+            }
             Debug.WriteLine("Tick tick");
             RenderTick.Enabled = true;
             screen.Image = image;
             screen.Refresh();
             test.Text = "Click";
+            running = true;
+            
+            Timer timer = new Timer();
+            timer.Interval = 100;
+            timer.Tick += DoDrawing;
+            timer.Start();
+            //test.Enabled = false;
+        }
+
+        public void DoDrawing(object sender, EventArgs e)
+        {
+            screen.Image = image;
+            screen.Refresh();
         }
     }
 }

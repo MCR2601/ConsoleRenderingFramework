@@ -17,7 +17,7 @@ namespace ConsoleRenderingFramework
         public NotAConsoleWindow RenderingForm;
         Graphics g;
 
-        public int pixelSize = 4;
+        public int PixelSize = 4;
 
         public GMUF(int height, int width)
         {
@@ -30,13 +30,13 @@ namespace ConsoleRenderingFramework
             PInfo pi = ScreenBuffer[x, y];
             Brush b = PInfoUtil.GetPInfoBrush(pi);
 
-            g.FillRectangle(b, new Rectangle(x * pixelSize, y * pixelSize, pixelSize, pixelSize));
+            g.FillRectangle(b, new Rectangle(x * PixelSize, y * PixelSize, PixelSize, PixelSize));
 
         }
 
         public override void PrintFrame()
         {
-            Bitmap map = new Bitmap(width, height);
+            Bitmap map = new Bitmap(width*PixelSize, height*PixelSize);
 
 
             for (int x = 0; x < width; x++)
@@ -49,7 +49,14 @@ namespace ConsoleRenderingFramework
                         CurrentScreen[x, y].Override(ScreenBuffer[x, y]);
                     }
                     ScreenBuffer[x, y].isChanged = false;
-                    map.SetPixel(x, y, ConsoleToColor(CurrentScreen[x, y].Background));
+
+                    for (int px = 0; px < PixelSize; px++)
+                    {
+                        for (int py = 0; py < PixelSize; py++)
+                        {
+                            map.SetPixel(x * PixelSize + px, y * PixelSize + py, ConsoleToColor(CurrentScreen[x, y].Background));
+                        }
+                    }
                 }
             }
             RenderingForm.image = map;
