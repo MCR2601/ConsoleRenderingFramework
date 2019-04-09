@@ -14,6 +14,8 @@ namespace ConsoleRenderingFramework
     public partial class NotAConsoleWindow : Form
     {
 
+        public static readonly object BitmapLock = new object();
+
         public Bitmap image;
 
         private bool running = false;
@@ -65,8 +67,11 @@ namespace ConsoleRenderingFramework
 
         public void DoDrawing(object sender, EventArgs e)
         {
-            screen.Image = image;
-            screen.Refresh();
+            //screen.Image = image;
+            lock (BitmapLock)
+            {
+                screen.Refresh();
+            }
         }
     }
 }

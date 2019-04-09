@@ -17,12 +17,15 @@ namespace ConsoleRenderingFramework
         public NotAConsoleWindow RenderingForm;
         Graphics g;
 
-        public int PixelSize = 4;
+        public int PixelSize = 5;
+        Bitmap map;
+        
 
         public GMUF(int height, int width)
         {
             this.height = height;
             this.width = width;
+            map = new Bitmap(width* PixelSize, height * PixelSize);
         }
 
         protected override void PrintPixel(int y, int x)
@@ -36,26 +39,27 @@ namespace ConsoleRenderingFramework
 
         public override void PrintFrame()
         {
-            Bitmap map = new Bitmap(width*PixelSize, height*PixelSize);
-
-
-            for (int x = 0; x < width; x++)
+            lock (NotAConsoleWindow.BitmapLock)
             {
-                for (int y = 0; y < height; y++)
+                for (int x = 0; x < width; x++)
                 {
-                    if (!ScreenBuffer[x, y].Equals(CurrentScreen[x, y]))
+                    for (int y = 0; y < height; y++)
                     {
-                        //PrintPixel(y, x);
-                        CurrentScreen[x, y].Override(ScreenBuffer[x, y]);
-                    }
-                    ScreenBuffer[x, y].isChanged = false;
-
-                    for (int px = 0; px < PixelSize; px++)
-                    {
-                        for (int py = 0; py < PixelSize; py++)
+                        if (!ScreenBuffer[x, y].Equals(CurrentScreen[x, y]))
                         {
-                            map.SetPixel(x * PixelSize + px, y * PixelSize + py, ConsoleToColor(CurrentScreen[x, y].Background));
+                            //PrintPixel(y, x);
+                            CurrentScreen[x, y].Override(ScreenBuffer[x, y]);
+
+                            for (int px = 0; px < PixelSize; px++)
+                            {
+                                for (int py = 0; py < PixelSize; py++)
+                                {
+                                    map.SetPixel(x * PixelSize + px, y * PixelSize + py, ConsoleToColor(CurrentScreen[x, y].Background));
+                                }
+                            }
                         }
+                        ScreenBuffer[x, y].isChanged = false;
+
                     }
                 }
             }

@@ -23,14 +23,30 @@ namespace RayMarching
 
         public virtual double GetDistance(Vector3 target)
         {
+            switch (Type)
+            {
+                case GType.Sphere:
+                    return DistanceCalculator.SphereDist(target, Position);
+                    break;
+                case GType.Box:
+                    return DistanceCalculator.BoxDist(target, Position, new Vector3(1, 1, 1));
+                    break;
+                case GType.Torus:
+                    return DistanceCalculator.TorusDist(target, Position, new Vector3(1, 1, 1));
+                    break;
+                default:
+                    break;
+            }
+
             return DistanceCalculator.SphereDist(target, Position);
         }
 
-        public Geometry(Vector3 position, ConsoleColor color)
+        public Geometry(Vector3 position, ConsoleColor color, GType type = GType.Sphere)
         {
             Position = position;
             Type = GType.Sphere;
             Color = color;
+            Type = type;
         }
     }
 }

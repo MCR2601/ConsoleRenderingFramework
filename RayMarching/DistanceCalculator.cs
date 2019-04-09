@@ -17,7 +17,7 @@ namespace RayMarching
         public static double BoxDist(Vector3 from, Vector3 pos, Vector3 box)
         {
             Vector3 d = (from - pos).Abs() - box;
-            return d.Length;//+ Math.Min(Math.Max(d.X, Math.Max(d.Y, d.Z)), 0.0);
+            return d.Length;// + Math.Min(Math.Max(d.X, Math.Max(d.Y, d.Z)), 0.0);
         }
         /// <summary>
         /// 

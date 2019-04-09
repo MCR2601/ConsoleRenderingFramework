@@ -67,9 +67,9 @@ namespace RayMarching
 
             // Camera and objects
             List<Geometry> geometries = new List<Geometry>();
-            geometries.Add(new Geometry(new Vector3(1, 1, 5), ConsoleColor.Red));
+            geometries.Add(new Geometry(new Vector3(1, 1, 5), ConsoleColor.Red, Geometry.GType.Sphere));
             geometries.Add(new Geometry(new Vector3(3, 0, 2), ConsoleColor.Yellow));
-            geometries.Add(new Geometry(new Vector3(-2, 1, 4), ConsoleColor.Green));
+            geometries.Add(new Geometry(new Vector3(-2, 1, 4), ConsoleColor.Green, Geometry.GType.Sphere));
             geometries.Add(new Geometry(new Vector3(-1.5, -3, 4), ConsoleColor.Magenta));
             geometries.Add(new Geometry(new Vector3(2, 4, -4), ConsoleColor.Yellow));
             geometries.Add(new Geometry(new Vector3(1.5, -2, 4.5), ConsoleColor.Cyan));

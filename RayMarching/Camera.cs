@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using Alea.CSharp;
+using Alea;
+using Alea.Parallel;
 
 namespace RayMarching
 {
@@ -19,6 +23,8 @@ namespace RayMarching
 
         public int ScreenHeight;
         public int ScreenWidth;
+
+        PInfo[,] ScreenBuffer;
 
         public double FOV; // in degree
 
@@ -36,6 +42,7 @@ namespace RayMarching
             ScreenWidth = screenWidth;
             FOV = fov;
             Objects = objects;
+            ScreenBuffer = new PInfo[screenWidth, screenHeight];
         }
 
         public Vector3[,] GetRays()
@@ -82,7 +89,7 @@ namespace RayMarching
             }
             return pixels;
         }
-
+        [GpuManaged]
         public RayHit MarchRay(Vector3 rayDir,double maxRange,Vector3 startPos)
         {
             // define the current position of the ray
@@ -128,33 +135,57 @@ namespace RayMarching
             return new RayHit(currentPos, null, DefaultColor);
         }
 
+        [GpuManaged]
         public PInfo[,] RenderImage()
         {
-            PInfo[,] image = new PInfo[ScreenWidth, ScreenHeight];
+            Gpu gpu = Gpu.Default;
+
+            
+
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
 
             Vector3[,] rays = GetRays();
             List<Task> tasks = new List<Task>();
 
+
+
+            gpu.For(0, ScreenWidth * ScreenHeight, (index) =>
+                {
+                    int y = index / ScreenWidth;
+                    int x = index % ScreenWidth;
+
+                    RayHit hit = MarchRay(rays[x, y], MaxLength, Position);
+
+                    RayHit skyHit = MarchRay(new Vector3(0, 1, 0), LightHeight - hit.Position.Y, hit.Position + new Vector3(0, MarchPrecission * 2, 0));
+
+                    ScreenBuffer[x, y] = new PInfo().SetBg(skyHit.Object == null ? hit.color : Shade(hit.color));
+                });
+            
+            /*
             for (int x = 0; x < ScreenWidth; x++)
             {
+                int tx = x;
+
                 for (int y = 0; y < ScreenHeight; y++)
                 {
-                    int tx = x;
+
                     int ty = y;
-                    tasks.Add(Task.Run(
-                        () => {
-                            RayHit hit = MarchRay(rays[tx, ty], MaxLength, Position);
 
-                            RayHit skyHit = MarchRay(new Vector3(0, 1, 0), LightHeight - hit.Position.Y, hit.Position + new Vector3(0, MarchPrecission * 2, 0));
 
-                            image[tx, ty] = new PInfo().SetBg(skyHit.Object == null ? hit.color : Shade(hit.color));
-                        }
-                    ));
-                    
+                    RayHit hit = MarchRay(rays[tx, ty], MaxLength, Position);
+
+                    RayHit skyHit = MarchRay(new Vector3(0, 1, 0), LightHeight - hit.Position.Y, hit.Position + new Vector3(0, MarchPrecission * 2, 0));
+
+                    ScreenBuffer[tx, ty] = new PInfo().SetBg(skyHit.Object == null ? hit.color : Shade(hit.color));
+
                 }
             }
-            Task.WaitAll(tasks.ToArray());
-            return image;
+            */
+            //Task.WaitAll(tasks.ToArray());
+            watch.Stop();
+            Debug.WriteLine(watch.ElapsedMilliseconds);
+            return ScreenBuffer;
         }
 
         public ConsoleColor Shade(ConsoleColor color)
@@ -163,55 +194,38 @@ namespace RayMarching
             {
                 case ConsoleColor.Black:
                     return ConsoleColor.Black;
-                    break;
                 case ConsoleColor.DarkBlue:
                     return ConsoleColor.Blue;
-                    break;
                 case ConsoleColor.DarkGreen:
                     return ConsoleColor.Green;
-                    break;
                 case ConsoleColor.DarkCyan:
                     return ConsoleColor.Cyan;
-                    break;
                 case ConsoleColor.DarkRed:
                     return ConsoleColor.Red;
-                    break;
                 case ConsoleColor.DarkMagenta:
                     return ConsoleColor.Magenta;
-                    break;
                 case ConsoleColor.DarkYellow:
                     return ConsoleColor.Yellow;
-                    break;
                 case ConsoleColor.Gray:
                     return ConsoleColor.DarkGray;
-                    break;
                 case ConsoleColor.DarkGray:
                     return ConsoleColor.Black;
-                    break;
                 case ConsoleColor.Blue:
                     return ConsoleColor.DarkBlue;
-                    break;
                 case ConsoleColor.Green:
                     return ConsoleColor.DarkGreen;
-                    break;
                 case ConsoleColor.Cyan:
                     return ConsoleColor.DarkCyan;
-                    break;
                 case ConsoleColor.Red:
                     return ConsoleColor.DarkRed;
-                    break;
                 case ConsoleColor.Magenta:
                     return ConsoleColor.DarkMagenta;
-                    break;
                 case ConsoleColor.Yellow:
                     return ConsoleColor.DarkYellow;
-                    break;
                 case ConsoleColor.White:
                     return ConsoleColor.Gray;
-                    break;
                 default:
                     return ConsoleColor.Black;
-                    break;
             }
         }
 
