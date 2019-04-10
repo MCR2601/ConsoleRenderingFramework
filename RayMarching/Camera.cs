@@ -5,9 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
-using Alea.CSharp;
-using Alea;
-using Alea.Parallel;
+
 
 namespace RayMarching
 {
@@ -47,6 +45,9 @@ namespace RayMarching
 
         public Vector3[,] GetRays()
         {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+
             Vector3[,] pixels = new Vector3[ScreenWidth, ScreenHeight];
 
             // calculate the bottom left pixel
@@ -63,10 +64,10 @@ namespace RayMarching
             {
                 for (int y = 0; y < pixels.GetLength(1); y++)
                 {
-                    //pixels[x,y] = 
+                    //pixels[x, y] =
                     //    new Vector3(
-                    //        (-ScreenWidth/2)+x,
-                    //        (-ScreenHeight/2)+y,
+                    //        (-ScreenWidth / 2) + x,
+                    //        (-ScreenHeight / 2) + y,
                     //        0);
 
                     pixels[x, y] =
@@ -80,6 +81,7 @@ namespace RayMarching
                 for (int y = 0; y < pixels.GetLength(1); y++)
                 {
 
+
                     Vector3 changed = (pixels[x, y].RotateX(viewAngle.Theta - Vector3.DegToRad(90))
                            .RotateY(-(viewAngle.Phi - (ViewDirection.X == 0 && ViewDirection.Z == 0 ? 0 : Vector3.DegToRad(90))))
                        );// + (ViewDirection.AsNormalized() * AngleLenght);
@@ -87,9 +89,11 @@ namespace RayMarching
                 }
 
             }
+            watch.Stop();
+            Debug.WriteLine("GetRays:" + watch.ElapsedMilliseconds);
             return pixels;
         }
-        [GpuManaged]
+
         public RayHit MarchRay(Vector3 rayDir,double maxRange,Vector3 startPos)
         {
             // define the current position of the ray
@@ -135,54 +139,41 @@ namespace RayMarching
             return new RayHit(currentPos, null, DefaultColor);
         }
 
-        [GpuManaged]
         public PInfo[,] RenderImage()
         {
-            Gpu gpu = Gpu.Default;
-
             
-
             Stopwatch watch = new Stopwatch();
-            watch.Start();
+            
 
             Vector3[,] rays = GetRays();
+
             List<Task> tasks = new List<Task>();
 
+            watch.Start();
 
-
-            gpu.For(0, ScreenWidth * ScreenHeight, (index) =>
-                {
-                    int y = index / ScreenWidth;
-                    int x = index % ScreenWidth;
-
-                    RayHit hit = MarchRay(rays[x, y], MaxLength, Position);
-
-                    RayHit skyHit = MarchRay(new Vector3(0, 1, 0), LightHeight - hit.Position.Y, hit.Position + new Vector3(0, MarchPrecission * 2, 0));
-
-                    ScreenBuffer[x, y] = new PInfo().SetBg(skyHit.Object == null ? hit.color : Shade(hit.color));
-                });
-            
-            /*
             for (int x = 0; x < ScreenWidth; x++)
             {
                 int tx = x;
-
-                for (int y = 0; y < ScreenHeight; y++)
+                tasks.Add(Task.Run(() =>
                 {
+                    for (int y = 0; y < ScreenHeight; y++)
+                    {
 
-                    int ty = y;
+                        int ty = y;
 
 
-                    RayHit hit = MarchRay(rays[tx, ty], MaxLength, Position);
+                        RayHit hit = MarchRay(rays[tx, ty], MaxLength, Position);
 
-                    RayHit skyHit = MarchRay(new Vector3(0, 1, 0), LightHeight - hit.Position.Y, hit.Position + new Vector3(0, MarchPrecission * 2, 0));
+                        RayHit skyHit = MarchRay(new Vector3(0, 1, 0), LightHeight - hit.Position.Y,
+                            hit.Position + new Vector3(0, MarchPrecission * 2, 0));
 
-                    ScreenBuffer[tx, ty] = new PInfo().SetBg(skyHit.Object == null ? hit.color : Shade(hit.color));
+                        ScreenBuffer[tx, ty] = new PInfo().SetBg(skyHit.Object == null ? hit.color : Shade(hit.color));
 
-                }
+                    }
+                }));
             }
-            */
-            //Task.WaitAll(tasks.ToArray());
+            
+            Task.WaitAll(tasks.ToArray());
             watch.Stop();
             Debug.WriteLine(watch.ElapsedMilliseconds);
             return ScreenBuffer;

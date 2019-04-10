@@ -93,7 +93,7 @@ namespace RayMarching
             {
                 while (running)
                 {
-                    System.Threading.Thread.Sleep(50);
+                    //System.Threading.Thread.Sleep(50);
 
                     if (Keyboard.IsKeyDown(Key.Escape))
                     {
