@@ -150,7 +150,7 @@ namespace RayMarching
             List<Task> tasks = new List<Task>();
 
             watch.Start();
-
+            int boxCount = 0;
             for (int x = 0; x < ScreenWidth; x++)
             {
                 int tx = x;
@@ -166,7 +166,13 @@ namespace RayMarching
 
                         RayHit skyHit = MarchRay(new Vector3(0, 1, 0), LightHeight - hit.Position.Y,
                             hit.Position + new Vector3(0, MarchPrecission * 2, 0));
-
+                        if (hit.Object!=null)
+                        {
+                            if (hit.Object.Type == Geometry.GType.Box)
+                            {
+                                boxCount++;
+                            }
+                        }
                         ScreenBuffer[tx, ty] = new PInfo().SetBg(skyHit.Object == null ? hit.color : Shade(hit.color));
 
                     }
@@ -175,7 +181,8 @@ namespace RayMarching
             
             Task.WaitAll(tasks.ToArray());
             watch.Stop();
-            Debug.WriteLine(watch.ElapsedMilliseconds);
+            Debug.WriteLine("Final Render Time: " + watch.ElapsedMilliseconds);
+            Debug.WriteLine("Boxes: " + boxCount);
             return ScreenBuffer;
         }
 

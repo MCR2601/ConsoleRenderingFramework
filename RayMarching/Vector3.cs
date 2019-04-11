@@ -137,6 +137,8 @@ namespace RayMarching
             };
         }
 
+        public static Vector3 Max(Vector3 vec, double value) => new Vector3(vec.X> value?vec.X:value, vec.Y > value ? vec.Y : value, vec.Z > value ? vec.Z : value);
+
         public static double RadToDeg(double rad)
         {
             return 180 / Math.PI;

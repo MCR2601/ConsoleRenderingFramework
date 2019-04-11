@@ -14,6 +14,8 @@ namespace RayMarching
 
         public ConsoleColor Color;
 
+        public Vector3 Size;
+
         public enum GType
         {
             Sphere,
@@ -29,10 +31,10 @@ namespace RayMarching
                     return DistanceCalculator.SphereDist(target, Position);
                     break;
                 case GType.Box:
-                    return DistanceCalculator.BoxDist(target, Position, new Vector3(1, 1, 1));
+                    return DistanceCalculator.BoxDist(target, Position, Size);
                     break;
                 case GType.Torus:
-                    return DistanceCalculator.TorusDist(target, Position, new Vector3(1, 1, 1));
+                    return DistanceCalculator.TorusDist(target, Position, Size);
                     break;
                 default:
                     break;
@@ -41,12 +43,20 @@ namespace RayMarching
             return DistanceCalculator.SphereDist(target, Position);
         }
 
-        public Geometry(Vector3 position, ConsoleColor color, GType type = GType.Sphere)
+        public Geometry(Vector3 position, ConsoleColor color, GType type = GType.Sphere, Vector3 size = null )
         {
             Position = position;
             Type = GType.Sphere;
             Color = color;
             Type = type;
+            if (size == null)
+            {
+                Size = new Vector3(1, 1, 1);
+            }
+            else
+            {
+                Size = size;
+            }
         }
     }
 }
