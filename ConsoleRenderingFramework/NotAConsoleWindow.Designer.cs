@@ -54,6 +54,7 @@
             this.test.Name = "test";
             this.test.Size = new System.Drawing.Size(75, 23);
             this.test.TabIndex = 1;
+            this.test.TabStop = false;
             this.test.Text = "Test";
             this.test.UseVisualStyleBackColor = true;
             this.test.Click += new System.EventHandler(this.test_Click);
