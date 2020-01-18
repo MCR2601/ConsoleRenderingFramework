@@ -28,17 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.RenderTick = new System.Windows.Forms.Timer(this.components);
             this.screen = new System.Windows.Forms.PictureBox();
             this.test = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.screen)).BeginInit();
             this.SuspendLayout();
-            // 
-            // RenderTick
-            // 
-            this.RenderTick.Enabled = true;
-            this.RenderTick.Tick += new System.EventHandler(this.RenderTick_Tick);
             // 
             // screen
             // 
@@ -74,8 +67,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Timer RenderTick;
         private System.Windows.Forms.PictureBox screen;
         private System.Windows.Forms.Button test;
     }

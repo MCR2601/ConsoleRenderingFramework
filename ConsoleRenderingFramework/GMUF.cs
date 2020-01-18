@@ -39,31 +39,31 @@ namespace ConsoleRenderingFramework
 
         public override void PrintFrame()
         {
-            lock (NotAConsoleWindow.BitmapLock)
+            
+            for (int x = 0; x < width; x++)
             {
-                for (int x = 0; x < width; x++)
+                for (int y = 0; y < height; y++)
                 {
-                    for (int y = 0; y < height; y++)
+                    if (!ScreenBuffer[x, y].Equals(CurrentScreen[x, y]))
                     {
-                        if (!ScreenBuffer[x, y].Equals(CurrentScreen[x, y]))
-                        {
-                            //PrintPixel(y, x);
-                            CurrentScreen[x, y].Override(ScreenBuffer[x, y]);
+                        //PrintPixel(y, x);
+                        CurrentScreen[x, y].Override(ScreenBuffer[x, y]);
 
-                            for (int px = 0; px < PixelSize; px++)
+                        for (int px = 0; px < PixelSize; px++)
+                        {
+                            for (int py = 0; py < PixelSize; py++)
                             {
-                                for (int py = 0; py < PixelSize; py++)
-                                {
-                                    map.SetPixel(x * PixelSize + px, y * PixelSize + py, ConsoleToColor(CurrentScreen[x, y].Background));
-                                }
+                                map.SetPixel(x * PixelSize + px, y * PixelSize + py,
+                                    ConsoleToColor(CurrentScreen[x, y].Background));
                             }
                         }
-                        ScreenBuffer[x, y].isChanged = false;
-
                     }
+
+                    ScreenBuffer[x, y].isChanged = false;
+
                 }
             }
-            RenderingForm.image = map;
+
         }
 
         public void SetRederingForm(NotAConsoleWindow f)

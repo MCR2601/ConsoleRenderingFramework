@@ -20,49 +20,33 @@ namespace ConsoleRenderingFramework
 
         private bool running = false;
 
+        public Action IdleHandle;
+
         public NotAConsoleWindow()
         {
             InitializeComponent();
+            Application.Idle += HandleApplicationIdle;
+            
+
         }
 
-        private void RenderTick_Tick(object sender, EventArgs e)
+        private void HandleApplicationIdle(object sender, EventArgs e)
         {
-            Debug.WriteLine("Tick tick");
-            screen.Image = image;
-            screen.Refresh();
+            if (running)
+            {
+                IdleHandle?.Invoke();
+            }
         }
 
-        public void EnableRender()
-        {
-            RenderTick.Enabled = true;
-        }
-        public void DisableRender()
-        {
-            RenderTick.Enabled = false;
-        }
-        public void SetUpdateRate(int time)
-        {
-            RenderTick.Interval = time;
-        }
-
+        
         private void test_Click(object sender, EventArgs e)
         {
             if (running)
             {
                 return;
             }
-            Debug.WriteLine("Tick tick");
-            RenderTick.Enabled = true;
-            screen.Image = image;
-            screen.Refresh();
-            test.Text = "Click";
+
             running = true;
-            
-            Timer timer = new Timer();
-            timer.Interval = 100;
-            timer.Tick += DoDrawing;
-            timer.Start();
-            //test.Enabled = false;
         }
 
         public void DoDrawing(object sender, EventArgs e)
