@@ -15,8 +15,22 @@ namespace ConsoleRenderingFramework.BasicScreenManagerPackage
         /// <summary>
         /// this stores all the screens by Application plus the layer
         /// </summary>
-        Dictionary<IRenderingApplication, Tuple<Rectangle, int>> SplitScreens = new Dictionary<IRenderingApplication, Tuple<Rectangle, int>>();
-        
+        Dictionary<IRenderingApplication, ScreenInfo> SplitScreens = new Dictionary<IRenderingApplication, ScreenInfo>();
+
+        private class ScreenInfo
+        {
+            public Rectangle Dimensions;
+            public int SortingLayer;
+            public bool Shown;
+
+            public ScreenInfo(Rectangle dimensions, int sortingLayer, bool shown)
+            {
+                Dimensions = dimensions;
+                SortingLayer = sortingLayer;
+                Shown = shown;
+            }
+        }
+
         /// <summary>
         /// the highes layer that exists
         /// </summary>
@@ -56,14 +70,14 @@ namespace ConsoleRenderingFramework.BasicScreenManagerPackage
 
         public void AddScreen(IRenderingApplication app, Rectangle rec)
         {
-            SplitScreens.Add(app, new Tuple<Rectangle, int>(rec, highestLayer));
+            SplitScreens.Add(app, new ScreenInfo(rec,highestLayer,true));
             highestLayer++;
             RegisterApp(app);
         }
 
         public void AddScreen(IRenderingApplication app, Rectangle rec, int layer)
         {
-            SplitScreens.Add(app, new Tuple<Rectangle, int>(rec, layer));
+            SplitScreens.Add(app, new ScreenInfo(rec,layer,true));
             RegisterApp(app);
         }
         
@@ -84,8 +98,8 @@ namespace ConsoleRenderingFramework.BasicScreenManagerPackage
                 else
                 {
                     //Console.WriteLine(sender);
-                    Tuple<Rectangle, int> pos = SplitScreens[sender];
-                    DrawScreen(information, x + pos.Item1.X, y + pos.Item1.Y, this);
+                    ScreenInfo info = SplitScreens[sender];
+                    DrawScreen(information, x + info.Dimensions.X, y + info.Dimensions.Y, this);
                 }                
             }
         }
@@ -96,14 +110,13 @@ namespace ConsoleRenderingFramework.BasicScreenManagerPackage
 
             
 
-            foreach (var item in SplitScreens.OrderBy(x=>x.Value.Item2))
+            foreach (var item in SplitScreens.OrderBy(x=>x.Value.SortingLayer))
             {
+                ScreenInfo info = item.Value;
                 if (EnablingBordering)
                 {
-
-                    App_DrawScreen(BasicProvider.getInked(item.Value.Item1.Width + 2, item.Value.Item1.Height + 2, Border), item.Value.Item1.X - 1, item.Value.Item1.Y - 1, this);
-                    App_DrawScreen(BasicProvider.getInked(item.Value.Item1.Width, item.Value.Item1.Height, Background), item.Value.Item1.X, item.Value.Item1.Y, this);
-
+                    App_DrawScreen(BasicProvider.getInked(info.Dimensions.Width + 2, info.Dimensions.Height + 2, Border), info.Dimensions.X - 1, info.Dimensions.Y - 1, this);
+                    App_DrawScreen(BasicProvider.getInked(info.Dimensions.Width, info.Dimensions.Height, Background), info.Dimensions.X, info.Dimensions.Y, this);
                 }
                 item.Key.Render();
             }
@@ -113,7 +126,7 @@ namespace ConsoleRenderingFramework.BasicScreenManagerPackage
         {
             if (SplitScreens.ContainsKey(app))
             {
-                SplitScreens[app] = new Tuple<Rectangle, int>(SplitScreens[app].Item1,newLayer);
+                SplitScreens[app].SortingLayer = newLayer;
             }
         }
 
@@ -121,23 +134,23 @@ namespace ConsoleRenderingFramework.BasicScreenManagerPackage
         {
             if (SplitScreens.ContainsKey(app))
             {
-                return SplitScreens[app].Item1;
+                return SplitScreens[app].Dimensions;
             }
             return new Rectangle();
         }
+        
         public void SetPositionOf(IRenderingApplication app, Rectangle rec)
         {
             if (SplitScreens.ContainsKey(app))
             {
-                SplitScreens[app] = new Tuple<Rectangle, int>(rec, SplitScreens[app].Item2);
+                SplitScreens[app].Dimensions = rec;
             }
         }
         public void TranslatePositionOf(IRenderingApplication app, Point p)
         {
             if (SplitScreens.ContainsKey(app))
             {
-                Rectangle rec = SplitScreens[app].Item1;
-                SplitScreens[app] = new Tuple<Rectangle, int>(new Rectangle(rec.X + p.X, rec.Y + p.Y, rec.Width, rec.Height), SplitScreens[app].Item2);
+                SplitScreens[app].Dimensions.Offset(p);
             }
         }
 
