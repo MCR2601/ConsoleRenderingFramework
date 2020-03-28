@@ -68,6 +68,10 @@
       <Project>{1e059ed0-dd63-4a1f-b334-f3adc43ab0d6}</Project>
       <Name>ConsoleRenderingFramework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ConsoleSpeedUp\CRFConsoleSpeedUp.csproj">
+      <Project>{d1bcaa6f-263a-4701-91bf-a49fc8b0644c}</Project>
+      <Name>CRFConsoleSpeedUp</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="readme.txt" />

@@ -7,6 +7,7 @@ using ConsoleRenderingFramework;
 using System.Diagnostics;
 using System.Windows.Forms;
 using ConsoleRenderingFramework.BasicScreenManagerPackage;
+using ConsoleRenderingFramework.ConsoleSpeedUp;
 
 namespace Doom
 {
@@ -98,7 +99,7 @@ namespace Doom
         }
         public static void StartGMU()
         {
-            GMU gmu = new GMU(width, height);
+            FastGMU gmu = new FastGMU(width, height);
             MultiSplitScreenManager sm = new MultiSplitScreenManager(gmu.PlacePixels, height, width);
             // use this for rendering
             FullScreenManager rs = new FullScreenManager(width - 2, height - 2, null);
