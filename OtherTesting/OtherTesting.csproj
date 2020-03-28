@@ -49,6 +49,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ConsoleRenderingFramework\ConsoleRenderingFramework.csproj">
+      <Project>{1E059ED0-DD63-4A1F-B334-F3ADC43AB0D6}</Project>
+      <Name>ConsoleRenderingFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ConsoleSpeedUp\CRFConsoleSpeedUp.csproj">
+      <Project>{d1bcaa6f-263a-4701-91bf-a49fc8b0644c}</Project>
+      <Name>CRFConsoleSpeedUp</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CRFInput\CRFInput.csproj">
       <Project>{52a735ac-7405-4398-9c6d-0c610fc305bd}</Project>
       <Name>CRFInput</Name>

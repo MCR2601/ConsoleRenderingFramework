@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleRenderingFramework;
 using ConsoleRenderingFramework.Debug;
 using ConsoleRenderingFramework.Input;
+using ConsoleRenderingFramework.ConsoleSpeedUp;
 
 namespace OtherTesting
 {
@@ -12,6 +15,28 @@ namespace OtherTesting
     {
         static void Main(string[] args)
         {
+            Console.ReadLine();
+            Stopwatch stop = new Stopwatch();
+
+            DirectConsoleAccess d = new DirectConsoleAccess(90, 90, 1, 1);
+            FastGMU gmu = new FastGMU(90,90);
+
+            Console.ReadLine();
+            stop.Start();
+
+            //d.TestOutput();
+            //d.TestPInfo();
+
+            PInfo[,] data = new PInfo[90,90];
+            data.Populate(new PInfo().SetC('A').SetBg(ConsoleColor.Black).SetFg(ConsoleColor.White));
+            d.PrintBuffer(data);
+
+
+            stop.Stop();
+            Console.WriteLine((double)stop.ElapsedMilliseconds / 1000);
+            Console.WriteLine("-------------");
+
+            Console.ReadLine();
             ClassicDebugger debugger = new ClassicDebugger();
 
             Holder<int> x = new Holder<int>("X", 0, 10);
