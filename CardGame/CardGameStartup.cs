@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ConsoleRenderingFramework.BasicScreenManagerPackage;
 using ConsoleRenderingFramework.RenderProviders;
+using ConsoleRenderingFramework.ConsoleSpeedUp;
 
 namespace CardGame
 {
@@ -13,9 +14,9 @@ namespace CardGame
     {
         static void Main(string[] args)
         {
+            Console.ReadLine();
 
-
-            GMU gmu = new GMU(102, 62, 0, 0);            
+            FastGMU gmu = new FastGMU(102, 62);            
             gmu.PlacePixels(BasicProvider.getInked(102, 62, new PInfo().SetBg(ConsoleColor.DarkGray)), 0, 0, null);
             gmu.PrintFrame();
             gmu.PlacePixels(BasicProvider.getInked(100, 60, new PInfo().SetBg(ConsoleColor.Black).SetFg( ConsoleColor.White).SetC(' ')), 1, 1, null);

@@ -60,5 +60,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ConsoleSpeedUp\CRFConsoleSpeedUp.csproj">
+      <Project>{d1bcaa6f-263a-4701-91bf-a49fc8b0644c}</Project>
+      <Name>CRFConsoleSpeedUp</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
