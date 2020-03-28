@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using ConsoleRenderingFramework;
 using ConsoleRenderingFramework.BasicScreenManagerPackage;
+using ConsoleRenderingFramework.ConsoleSpeedUp;
 using ConsoleRenderingFramework.RenderProviders;
 
 namespace RayMarching
@@ -102,7 +103,7 @@ namespace RayMarching
 
         public static void RunInConsole()
         {
-            GMU gmu = new GMU(width + 2, height + 2, 0, 0);
+            FastGMU gmu = new FastGMU(width + 2, height + 2);
 
             MultiSplitScreenManager mssm = new MultiSplitScreenManager(gmu.PlacePixels, width, height);
             FullScreenManager screen = new FullScreenManager(width - 2, height - 2, null);
