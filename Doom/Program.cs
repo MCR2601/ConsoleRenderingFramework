@@ -8,20 +8,23 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using ConsoleRenderingFramework.BasicScreenManagerPackage;
 using ConsoleRenderingFramework.ConsoleSpeedUp;
+using System.Windows.Input;
+using ConsoleRenderingFramework.RenderProviders;
 
 namespace Doom
 {
     class Program
     {
         const double Speed = 0.3;
-        static int height = 60;
-        static int width = 120;
+        static int height = 80;
+        static int width = 200;
         const double rotation = 10 * Math.PI / 180;
 
         const bool inConsole = true;
 
-        
+        private static double time = 0;
 
+        [STAThread]
         static void Main(string[] args)
         {
             Console.ReadLine();
@@ -111,53 +114,77 @@ namespace Doom
             doom.Render();
             gmu.PrintFrame();
 
-            ConsoleKey input;
+            bool stop = false;
             bool sneak = false;
+            doom.PlayerHeight = 1;
+            Stopwatch watch = new Stopwatch();
 
-            while ((input = Console.ReadKey(true).Key) != ConsoleKey.Spacebar)
+            while (!stop)
             {
+                watch.Start();
+                time += 0.1;
 
                 double currRotation = Math.Atan2(doom.Player.y_2 - doom.Player.y_1, doom.Player.x_2 - doom.Player.x_1);
-                switch (input)
+
+                
+
+                if (Keyboard.IsKeyDown(Key.C) )
                 {
-                    case ConsoleKey.C:
-                        if (sneak)
-                        {
-                            doom.PlayerHeight = 1;
-                            sneak = false;
-                        }
-                        else
-                        {
-                            doom.PlayerHeight = 0.5;
-                            sneak = true;
-                        }
-                        break;
-                    case ConsoleKey.A:
-                        MoveLeft(doom);
-                        break;
-                    case ConsoleKey.S:
-                        MoveBack(doom);
-                        break;
-                    case ConsoleKey.D:
-                        MoveRight(doom);
-                        break;
-                    case ConsoleKey.W:
-                        MoveFront(doom);
-                        break;
-                    case ConsoleKey.RightArrow:
-                        doom.Player.x_2 = doom.Player.x_1 + Math.Cos(currRotation + rotation);
-                        doom.Player.y_2 = doom.Player.y_1 + Math.Sin(currRotation + rotation);
-                        break;
-                    case ConsoleKey.LeftArrow:
-                        doom.Player.x_2 = doom.Player.x_1 + Math.Cos(currRotation - rotation);
-                        doom.Player.y_2 = doom.Player.y_1 + Math.Sin(currRotation - rotation);
-                        break;
-                    default:
-                        break;
+                    if (sneak)
+                    {
+                        doom.PlayerHeight = 1;
+                        sneak = false;
+                    }
+                    else
+                    {
+                        doom.PlayerHeight = 0.5;
+                        sneak = true;
+                    }
                 }
+
+                if (Keyboard.IsKeyDown(Key.A))
+                {
+                    MoveLeft(doom);
+                }
+
+                if (Keyboard.IsKeyDown(Key.S))
+                {
+                    MoveBack(doom);
+                }
+
+                if (Keyboard.IsKeyDown(Key.D))
+                {
+                    MoveRight(doom);
+                }
+
+                if (Keyboard.IsKeyDown(Key.W))
+                {
+                    MoveFront(doom);
+                }
+
+                if (Keyboard.IsKeyDown(Key.Right))
+                {
+                    doom.Player.x_2 = doom.Player.x_1 + Math.Cos(currRotation + rotation);
+                    doom.Player.y_2 = doom.Player.y_1 + Math.Sin(currRotation + rotation);
+                }
+
+                if (Keyboard.IsKeyDown(Key.Left))
+                {
+                    doom.Player.x_2 = doom.Player.x_1 + Math.Cos(currRotation - rotation);
+                    doom.Player.y_2 = doom.Player.y_1 + Math.Sin(currRotation - rotation);
+                }
+
+
+                doom.PlayerHeight = (sneak ? 1 : 0.5) + Math.Sin(time) * 0.1;
                 //Console.Clear();
                 doom.Render();
+                watch.Stop();
+                gmu.PlacePixels(
+                    BasicProvider.TextToPInfo(( 1d /((double) watch.ElapsedMilliseconds / 1000)).ToString("#.000") + " FPS", 10, 1,
+                        new PInfo().SetBg(ConsoleColor.Black).SetFg(ConsoleColor.White)), 0, 0, null);
+                watch.Restart();
                 gmu.PrintFrame();
+                System.Threading.Thread.Sleep(1);
             }
 
 

@@ -220,14 +220,12 @@ namespace Doom
             dirY /= dist;
 
             // now calculate the number of pixels until first contact with a wall
-            int inst = 0;
+            
             //PInfo wallLook = new PInfo() { hasBackground = true, background = ConsoleColor.Black };
             bool reachedWall = false;
 
 
-            while ((!reachedWall) && inst * 0.01 < MAXDRAWDIST)
-            {
-                inst++;
+            
                 look.x_2 = look.x_1 + dirX * MAXDRAWDIST;
                 look.y_2 = look.y_1 + dirY * MAXDRAWDIST;
                 
@@ -257,13 +255,8 @@ namespace Doom
                     .Where(f => f.Distance <= found.Where(wall => !wall.Object.Item2.isTransparent).Min(closest => closest.Distance))
                     .OrderBy(all => -all.Distance)
                     .ToList();
-
-                if (ToRender.Count==0)
-                {
-                    Debug.WriteLine("empty");
-                }
-
-                reachedWall = true;
+            
+                
                 foreach (var some in ToRender)
                 {
                     double distFromOrigin = Math.Sqrt(Math.Pow(some.XInt - some.Object.Item1.x_1, 2) + Math.Pow(some.YInt - some.Object.Item1.y_1, 2));
@@ -293,7 +286,7 @@ namespace Doom
                     }
                 }*/
 
-            }
+            
 
             renderstack.Push(new Tuple<IRenderable, double, double>(
             new Object3D()
