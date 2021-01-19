@@ -124,7 +124,7 @@ namespace RayMarching
             
             while (running)
             {
-                System.Threading.Thread.Sleep(20);
+                //System.Threading.Thread.Sleep(20);
 
                 if (Keyboard.IsKeyDown(Key.Escape))
                 {
@@ -219,9 +219,9 @@ namespace RayMarching
                     }
                 }
 
-                Debug.WriteLine("before render");
+                //Debug.WriteLine("before render");
                 screen.App_DrawScreen(c.RenderImage(), 0, 0, null);
-                Debug.WriteLine("After render");
+                //Debug.WriteLine("After render");
                 gmu.PrintFrame();
             }
 

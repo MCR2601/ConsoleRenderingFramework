@@ -26,7 +26,7 @@ namespace RayMarching
 
         public double FOV; // in degree
 
-        public double MarchPrecission = 0.00000001;
+        public double MarchPrecission = 0.0001;
 
         public List<Geometry> Objects;
 
@@ -55,7 +55,7 @@ namespace RayMarching
             // we rotate left and down for that 
 
             double radPerPixelWidth = Vector3.DegToRad(FOV) / ScreenWidth;
-            double radPerPixelHeight = Vector3.DegToRad(FOV) / ScreenHeight;
+            double radPerPixelHeight = Vector3.DegToRad(FOV) / ScreenWidth;
 
 
             AngleVector viewAngle = ViewDirection.Angle;
@@ -156,26 +156,31 @@ namespace RayMarching
                 int tx = x;
                 tasks.Add(Task.Run(() =>
                 {
-                    for (int y = 0; y < ScreenHeight; y++)
+                    try
                     {
-
-                        int ty = y;
-
-
-                        RayHit hit = MarchRay(rays[tx, ty], MaxLength, Position);
-
-                        RayHit skyHit = MarchRay(new Vector3(0, 1, 0), LightHeight - hit.Position.Y,
-                            hit.Position + new Vector3(0, MarchPrecission * 2, 0));
-                        if (hit.Object!=null)
+                        for (int y = 0; y < ScreenHeight; y++)
                         {
-                            if (hit.Object.Type == Geometry.GType.Box)
-                            {
-                                boxCount++;
-                            }
-                        }
-                        ScreenBuffer[tx, ty] = new PInfo().SetBg(skyHit.Object == null ? hit.color : Shade(hit.color));
 
+                            int ty = y;
+
+
+                            RayHit hit = MarchRay(rays[tx, ty], MaxLength, Position);
+
+                            RayHit skyHit = MarchRay(new Vector3(0, 1, 0), LightHeight - hit.Position.Y,
+                                hit.Position + new Vector3(0, MarchPrecission * 2, 0));
+                            if (hit.Object != null)
+                            {
+                                if (hit.Object.Type == Geometry.GType.Box)
+                                {
+                                    boxCount++;
+                                }
+                            }
+                            ScreenBuffer[tx, ty] = new PInfo().SetBg(skyHit.Object == null ? hit.color : Shade(hit.color));
+                        }
                     }
+                    catch (Exception)
+                    {
+                    }                    
                 }));
             }
             
