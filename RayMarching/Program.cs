@@ -26,6 +26,7 @@ namespace RayMarching
         {
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
+            
             Console.Clear();
 
             Vector3 start = new Vector3(1, -1, 0);
@@ -33,6 +34,86 @@ namespace RayMarching
             //Console.ReadLine();
 
             Console.WriteLine("Alles bitte einstellen");
+            Console.OutputEncoding = Encoding.UTF8;
+
+
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write(" ░▒▓");
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.Write("▒░ ");
+            Console.WriteLine();
+
+
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Write(" ");
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.Write(" ");
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.Write(" ");
+            Console.BackgroundColor = ConsoleColor.DarkGray;
+            Console.Write(" ");
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.Write(" ");
+            Console.BackgroundColor = ConsoleColor.DarkRed;
+            Console.Write(" ");
+            Console.BackgroundColor = ConsoleColor.Green;
+            Console.Write(" ");
+            Console.BackgroundColor = ConsoleColor.DarkGreen;
+            Console.Write(" ");
+            Console.BackgroundColor = ConsoleColor.Yellow;
+            Console.Write(" ");
+            Console.BackgroundColor = ConsoleColor.DarkYellow;
+            Console.Write(" ");
+            Console.BackgroundColor = ConsoleColor.Cyan;
+            Console.Write(" ");
+            Console.BackgroundColor = ConsoleColor.DarkCyan;
+            Console.Write(" ");
+            Console.BackgroundColor = ConsoleColor.Magenta;
+            Console.Write(" ");
+            Console.BackgroundColor = ConsoleColor.DarkMagenta;
+            Console.Write(" ");
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.Write(" ");
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.Write(" ");
+
+            
+
+            Console.WriteLine();
+            Console.ReadKey();
+            Console.WriteLine(Console.LargestWindowHeight);
+            Console.WriteLine(Console.LargestWindowWidth);
+
+            Console.ReadKey();
+            Console.ResetColor();
+            ColorUtil.Initialize();
+            Console.ReadKey();
+
+
+            for (int r = 0; r < 10; r++)
+            {
+                for (int g = 0; g < 10; g++)
+                {
+                    for (int b = 0; b < 10; b++)
+                    {
+                        ColorUtil.GetRepresentation(r*25, g*25, b*25).PrintPixel();
+                    }
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("|");
+                    System.Threading.Thread.Sleep(1);
+                }
+            }
+            ColorUtil.GetRepresentation(0, 0, 42).PrintPixel();
+            ColorUtil.GetRepresentation(0, 0, 43).PrintPixel();
+            ColorUtil.GetRepresentation(0, 0, 44).PrintPixel();
+            ColorUtil.GetRepresentation(0, 0, 45).PrintPixel();
+            ColorUtil.GetRepresentation(0, 0, 46).PrintPixel();
+
+
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
 
             Console.ReadLine();
             Console.Clear();
@@ -103,6 +184,9 @@ namespace RayMarching
 
         public static void RunInConsole()
         {
+            //width = Console.LargestWindowWidth-2;
+            //height = Console.LargestWindowHeight-2;
+
             FastGMU gmu = new FastGMU(width + 2, height + 2);
 
             MultiSplitScreenManager mssm = new MultiSplitScreenManager(gmu.PlacePixels, width, height);
@@ -116,15 +200,39 @@ namespace RayMarching
 
             ConsoleKeyInfo input;
 
-            double MoveDistance = 0.2;
-            double rotateRad = Vector3.DegToRad(5);
+            double MoveDistance = 2;
+            double rotateRad = Vector3.DegToRad(75);
 
             bool running = true;
 
-            
+            Stopwatch simTime = new Stopwatch();
+
+            long lastFrame = simTime.ElapsedMilliseconds;
+            long nextFrame;
+            double frameSec;
+            simTime.Start();
+
+            double maxXLight = 15;
+            double oneRotationX = 10_000;
+
+            double maxYLight = 10;
+            double oneRotationY = 13_500;
+
             while (running)
             {
                 //System.Threading.Thread.Sleep(20);
+
+                nextFrame = simTime.ElapsedMilliseconds;
+                frameSec = (nextFrame - lastFrame) / 1000D;
+
+                #region input handle
+
+                double speed = MoveDistance;
+
+                if (Keyboard.IsKeyDown(Key.LeftShift))
+                {
+                    speed = speed * 1.75d;
+                }
 
                 if (Keyboard.IsKeyDown(Key.Escape))
                 {
@@ -133,44 +241,44 @@ namespace RayMarching
 
                 if (Keyboard.IsKeyDown(Key.A))
                 {
-                    c.Position = c.Position + ((new Vector3(-c.ViewDirection.Z, 0, c.ViewDirection.X).AsNormalized()) * MoveDistance);
+                    c.Position = c.Position + ((new Vector3(-c.ViewDirection.Z, 0, c.ViewDirection.X).AsNormalized()) * speed * frameSec);
                 }
 
                 if (Keyboard.IsKeyDown(Key.S))
                 {
-                    c.Position = c.Position + ((new Vector3(c.ViewDirection.X, 0, c.ViewDirection.Z).AsNormalized()) * -MoveDistance);
+                    c.Position = c.Position + ((new Vector3(c.ViewDirection.X, 0, c.ViewDirection.Z).AsNormalized()) * -speed * frameSec);
                 }
 
                 if (Keyboard.IsKeyDown(Key.D))
                 {
-                    c.Position = c.Position + ((new Vector3(c.ViewDirection.Z, 0, -c.ViewDirection.X).AsNormalized()) * MoveDistance);
+                    c.Position = c.Position + ((new Vector3(c.ViewDirection.Z, 0, -c.ViewDirection.X).AsNormalized()) * speed * frameSec);
                 }
 
                 if (Keyboard.IsKeyDown(Key.W))
                 {
-                    c.Position = c.Position + ((new Vector3(c.ViewDirection.X, 0, c.ViewDirection.Z).AsNormalized()) * MoveDistance);
+                    c.Position = c.Position + ((new Vector3(c.ViewDirection.X, 0, c.ViewDirection.Z).AsNormalized()) * speed * frameSec);
                 }
 
                 if (Keyboard.IsKeyDown(Key.Space))
                 {
-                    c.Position = c.Position + (new Vector3(0, 1, 0) * MoveDistance);
+                    c.Position = c.Position + (new Vector3(0, 1, 0) * speed * frameSec);
                 }
 
 
                 if (Keyboard.IsKeyDown(Key.C))
                 {
-                    c.Position = c.Position + (new Vector3(0, -1, 0) * MoveDistance);
+                    c.Position = c.Position + (new Vector3(0, -1, 0) * speed * frameSec);
                 }
 
                 if (Keyboard.IsKeyDown(Key.Left))
                 {
-                    c.ViewDirection = c.ViewDirection.RotateY(-rotateRad);
+                    c.ViewDirection = c.ViewDirection.RotateY(-rotateRad * frameSec);
                 }
 
                 if (Keyboard.IsKeyDown(Key.Down))
                 {
                     double currAngle = c.ViewDirection.Angle.Y;
-                    double target = currAngle + rotateRad;
+                    double target = currAngle + (rotateRad * frameSec);
                     if (target < Math.PI)
                     {
                         // we can change the angle
@@ -193,13 +301,13 @@ namespace RayMarching
 
                 if (Keyboard.IsKeyDown(Key.Right))
                 {
-                    c.ViewDirection = c.ViewDirection.RotateY(rotateRad);
+                    c.ViewDirection = c.ViewDirection.RotateY(rotateRad * frameSec);
                 }
 
                 if (Keyboard.IsKeyDown(Key.Up))
                 {
                     double currAngleI = c.ViewDirection.Angle.Y;
-                    double targetI = currAngleI - rotateRad;
+                    double targetI = currAngleI - (rotateRad * frameSec);
                     if (targetI < Math.PI)
                     {
                         // we can change the angle
@@ -219,10 +327,24 @@ namespace RayMarching
                     }
                 }
 
+                #endregion
+
+                #region Simulation
+
+                Vector3 newLight = new Vector3(maxXLight * (Math.Sin((nextFrame / oneRotationX) * Math.PI)), 10, maxYLight * (Math.Sin((nextFrame / oneRotationY) * Math.PI))) ;
+
+                c.LightPosition = newLight;
+
+                #endregion
+
+                #region rendering
                 //Debug.WriteLine("before render");
                 screen.App_DrawScreen(c.RenderImage(), 0, 0, null);
                 //Debug.WriteLine("After render");
                 gmu.PrintFrame();
+                #endregion
+
+                lastFrame = nextFrame;
             }
 
 
@@ -363,15 +485,15 @@ namespace RayMarching
         public static List<Geometry> GetGeometry()
         {
             List<Geometry> geometries = new List<Geometry>();
-            geometries.Add(new Geometry(new Vector3(1, 1, 5), ConsoleColor.Red, Geometry.GType.Box));
-            geometries.Add(new Geometry(new Vector3(3, 0, 2), ConsoleColor.Yellow));
-            geometries.Add(new Geometry(new Vector3(-2, 1, 4), ConsoleColor.Green, Geometry.GType.Box));
-            geometries.Add(new Geometry(new Vector3(-1.5, -3, 4), ConsoleColor.Magenta));
-            geometries.Add(new Geometry(new Vector3(2, 4, -4), ConsoleColor.Yellow));
-            geometries.Add(new Geometry(new Vector3(1.5, -2, 4.5), ConsoleColor.Cyan));
+            geometries.Add(new Geometry(new Vector3(1, 1, 5), new GeometryProperty(new GeometryColor(255,0,0),0.5,0.5), Geometry.GType.Box));
+            //geometries.Add(new Geometry(new Vector3(3, 0, 2), new GeometryProperty(new GeometryColor(255, 255, 0), 0.5, 0.5)));
+            geometries.Add(new Geometry(new Vector3(-2, 1, 4), new GeometryProperty(new GeometryColor(0, 255, 0), 0.5, 0.5), Geometry.GType.Box));
+            //geometries.Add(new Geometry(new Vector3(-1.5, -3, 4), new GeometryProperty(new GeometryColor(255, 0, 255), 0.5, 0.5)));
+            geometries.Add(new Geometry(new Vector3(2, 4, -4), new GeometryProperty(new GeometryColor(0, 255, 255), 0.5, 0.5),Geometry.GType.Torus,new Vector3(3,1,3)));
+            geometries.Add(new Geometry(new Vector3(1.5, -2, 4.5), new GeometryProperty(new GeometryColor(255, 0, 255), 0.5, 0.5)));
 
 
-            geometries.Add(new Geometry(new Vector3(0, -8, 0), ConsoleColor.White, Geometry.GType.Box, new Vector3(10, 0, 10)));
+            geometries.Add(new Geometry(new Vector3(0, -8, 0), new GeometryProperty(new GeometryColor(255, 255, 255), 0.5, 0.5), Geometry.GType.Box, new Vector3(10, 0, 10)));
             return geometries;
         }
 

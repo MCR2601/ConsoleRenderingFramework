@@ -10,14 +10,18 @@ namespace RayMarching
     {
         public Vector3 Position;
         public Geometry Object;
+        public Vector3 Normal;
+        public Vector3 ViewDirection;
+        public Vector3 Reflection;
 
-        public ConsoleColor color;
 
-        public RayHit(Vector3 position, Geometry @object, ConsoleColor color)
+        public RayHit(Vector3 position, Geometry @object, Vector3 normal, Vector3 viewDirection, Vector3 reflection)
         {
             Position = position;
             Object = @object;
-            this.color = color;
+            Normal = normal;
+            ViewDirection = viewDirection;
+            Reflection = reflection;
         }
     }
 }

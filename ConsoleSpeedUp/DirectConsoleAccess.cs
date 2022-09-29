@@ -18,7 +18,7 @@ namespace ConsoleRenderingFramework.ConsoleSpeedUp
         [DllImport("kernel32.dll",SetLastError =true)]
         static extern IntPtr GetStdHandle(int nStdHandle);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
+        [DllImport("kernel32.dll", SetLastError = true,CharSet = CharSet.Unicode)]
         static extern bool WriteConsoleOutput(
             IntPtr hConsoleOutput,
             CharInfo[] lpBuffer,
@@ -26,6 +26,7 @@ namespace ConsoleRenderingFramework.ConsoleSpeedUp
             Coord dwBufferCoord,
             ref SmallRect lpWriteRegion);
 
+        
         [StructLayout(LayoutKind.Sequential)]
         public struct Coord
         {
@@ -38,7 +39,7 @@ namespace ConsoleRenderingFramework.ConsoleSpeedUp
                 this.Y = Y;
             }
         };
-        [StructLayout(LayoutKind.Explicit)]
+        [StructLayout(LayoutKind.Explicit,CharSet=CharSet.Unicode)]
         public struct CharUnion
         {
             [FieldOffset(0)] public char UnicodeChar;
@@ -71,6 +72,17 @@ namespace ConsoleRenderingFramework.ConsoleSpeedUp
 
         SmallRect _WriteRegion;
 
+
+        bool doubleRegion = false;
+        SmallRect _writeRegion2;
+        int xPos1 = 0;
+        int xPos2 = 0;
+        bool currentRegion = true;
+
+        private bool EnableDounbleBuffering = false;
+        private IntPtr ShownHandle;
+        private IntPtr WriteHandle;
+
         public DirectConsoleAccess(int width,int height,int offsetX,int offsetY)
         {
             OutHandle = GetSTD_OUT();
@@ -79,6 +91,21 @@ namespace ConsoleRenderingFramework.ConsoleSpeedUp
 
             _Buffer = new CharInfo[_BufferWidth * _BufferHeight];
             _WriteRegion = new SmallRect() {Left = (short)offsetX, Top = (short)offsetY, Right = (short)_BufferWidth, Bottom = (short)_BufferHeight };
+        }
+
+        public void EnableDoubleRegion(int xPos, int left,int top, int right,int bottom)
+        {
+            _writeRegion2 = new SmallRect() { Left = (short)left, Top = (short)top, Right = (short)right, Bottom = (short)bottom};
+            doubleRegion = true;
+            xPos2 = xPos;
+        }
+
+        public static CharInfo ConvertToInfo(PInfo data)
+        {
+            CharInfo info = new CharInfo();
+            info.Char.UnicodeChar = data.Character;
+            info.Attributes = ColorToAttribute(data);
+            return info;
         }
 
         public bool PrintBuffer(PInfo[,] data)
@@ -93,7 +120,7 @@ namespace ConsoleRenderingFramework.ConsoleSpeedUp
             {
                 for (int y = 0; y < _BufferHeight; y++)
                 {
-                    _Buffer[x + y * _BufferWidth].Char.AsciiChar = CharToByte(data[x, y].Character);
+                    _Buffer[x + y * _BufferWidth].Char.UnicodeChar = data[x, y].Character;
                     _Buffer[x + y * _BufferWidth].Attributes = ColorToAttribute(data[x, y]);
                 }
             }
@@ -105,6 +132,44 @@ namespace ConsoleRenderingFramework.ConsoleSpeedUp
                 new Coord() {X = 0, Y = 0},
                 ref _WriteRegion);
             return b;
+        }
+
+        public bool PrintBuffer(CharInfo[] buffer,int width,int height)
+        {
+            if (doubleRegion)
+            {
+                if (currentRegion)
+                {
+
+                    bool b = WriteConsoleOutput(OutHandle, buffer,
+                        new Coord() { X = (short)width, Y = (short)height },
+                        new Coord() { X = 0, Y = 0 },
+                        ref _WriteRegion);
+                    Console.SetWindowPosition(xPos1, 0);
+
+                    return b;
+                }
+                else
+                {
+
+                    bool b = WriteConsoleOutput(OutHandle, buffer,
+                        new Coord() { X = (short)width, Y = (short)height },
+                        new Coord() { X = 0, Y = 0 },
+                        ref _writeRegion2);
+                    Console.SetWindowPosition(xPos2, 0);
+
+                    return b;
+                }
+            }
+            else
+            {
+                bool b = WriteConsoleOutput(OutHandle, buffer,
+                 new Coord() { X = (short)width, Y = (short)height },
+                 new Coord() { X = 0, Y = 0 },
+                 ref _WriteRegion);
+                return b;
+            }   
+            
         }
 
         

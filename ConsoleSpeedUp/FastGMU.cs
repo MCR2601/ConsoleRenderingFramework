@@ -9,16 +9,18 @@ namespace ConsoleRenderingFramework.ConsoleSpeedUp
 {
     public class FastGMU : GMU
     {
-        DirectConsoleAccess access;
+        public DirectConsoleAccess access;
 
-        public FastGMU(int w, int h)
+        public FastGMU(int w, int h,int xOffset = 0,int yOffset = 0)
         {
             height = h;
             width = w;
             Console.SetWindowSize(1, 1);
             Console.SetBufferSize(width, height);
             Console.SetWindowSize(width, height);
-            access = new DirectConsoleAccess(width, height, 0, 0);
+            
+                       
+            access = new DirectConsoleAccess(width, height, xOffset, yOffset);
             
             CreateScreen();
             ScreenBuffer.Populate(new PInfo().SetC(' ').SetBg(ConsoleColor.Red).SetFg(ConsoleColor.Blue));
@@ -32,6 +34,10 @@ namespace ConsoleRenderingFramework.ConsoleSpeedUp
             {
                 
             }
+        }
+        public bool PrintBuffer(DirectConsoleAccess.CharInfo[] buffer, int width, int height)
+        {
+            return access.PrintBuffer(buffer,width,height);            
         }
     }
 }

@@ -69,7 +69,7 @@ namespace RayMarching
         }
 
 
-        public void Clean(int detail = 10)
+        public void Clean(int detail = 4)
         {
             X = Math.Round(X,detail);
             Y = Math.Round(Y, detail);
@@ -158,6 +158,10 @@ namespace RayMarching
             return new Vector3(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
         }
         public static Vector3 operator *(Vector3 a, double v)
+        {
+            return new Vector3(a.X * v, a.Y * v, a.Z * v);
+        }
+        public static Vector3 operator *( double v, Vector3 a)
         {
             return new Vector3(a.X * v, a.Y * v, a.Z * v);
         }

@@ -31,9 +31,9 @@ namespace ReRayMarching
 
             // Camera and objects
             List<Geometry> geometries = new List<Geometry>();
-            geometries.Add(new Geometry(new Vector3(1, 1, 5), ConsoleColor.Red));
-            geometries.Add(new Geometry(new Vector3(3, 0, 2), ConsoleColor.Yellow));
-            geometries.Add(new Geometry(new Vector3(-2, 1, 4), ConsoleColor.Green));
+            //geometries.Add(new Geometry(new Vector3(1, 1, 5), ConsoleColor.Red));
+            //geometries.Add(new Geometry(new Vector3(3, 0, 2), ConsoleColor.Yellow));
+            //geometries.Add(new Geometry(new Vector3(-2, 1, 4), ConsoleColor.Green));
 
             Camera c = new Camera(new Vector3(0, 2, 0), new Vector3(0, 0, 1), height-2, width-2, 110, geometries);
 

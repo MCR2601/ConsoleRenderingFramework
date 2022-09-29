@@ -8,9 +8,10 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Pong</RootNamespace>
     <AssemblyName>Pong</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,12 +32,22 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Terminal Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Terminal Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BasicRenderProviders">
       <HintPath>..\BasicRenderProviders\bin\Debug\BasicRenderProviders.dll</HintPath>
     </Reference>
     <Reference Include="BasicScreenManagerPackage">
-      <HintPath>..\MultiSplitScreenManager\bin\Debug\BasicScreenManagerPackage.dll</HintPath>
+      <HintPath>..\MultiSplitScreenManager\obj\Debug\BasicScreenManagerPackage.dll</HintPath>
     </Reference>
     <Reference Include="ConsoleRenderingFramework">
       <HintPath>..\ConsoleRenderingFramework\bin\Debug\ConsoleRenderingFramework.dll</HintPath>
