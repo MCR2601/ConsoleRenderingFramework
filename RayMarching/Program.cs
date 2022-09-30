@@ -485,15 +485,15 @@ namespace RayMarching
         public static List<Geometry> GetGeometry()
         {
             List<Geometry> geometries = new List<Geometry>();
-            geometries.Add(new Geometry(new Vector3(1, 1, 5), new GeometryProperty(new GeometryColor(255,0,0),0.5,0.5), Geometry.GType.Box));
+            geometries.Add(new Geometry(new Vector3(1, 1, 5), new GeometryProperty(new GeometryColor(255,0,0),0.6,0.4), Geometry.GType.Box));
             //geometries.Add(new Geometry(new Vector3(3, 0, 2), new GeometryProperty(new GeometryColor(255, 255, 0), 0.5, 0.5)));
-            geometries.Add(new Geometry(new Vector3(-2, 1, 4), new GeometryProperty(new GeometryColor(0, 255, 0), 0.5, 0.5), Geometry.GType.Box));
+            geometries.Add(new Geometry(new Vector3(-2, 1, 4), new GeometryProperty(new GeometryColor(0, 255, 0), 0.6, 0.4), Geometry.GType.Box));
             //geometries.Add(new Geometry(new Vector3(-1.5, -3, 4), new GeometryProperty(new GeometryColor(255, 0, 255), 0.5, 0.5)));
-            geometries.Add(new Geometry(new Vector3(2, 4, -4), new GeometryProperty(new GeometryColor(0, 255, 255), 0.5, 0.5),Geometry.GType.Torus,new Vector3(3,1,3)));
-            geometries.Add(new Geometry(new Vector3(1.5, -2, 4.5), new GeometryProperty(new GeometryColor(255, 0, 255), 0.5, 0.5)));
+            geometries.Add(new Geometry(new Vector3(2, 4, -4), new GeometryProperty(new GeometryColor(0, 255, 255), 0.6, 0.4),Geometry.GType.Torus,new Vector3(3,1,3)));
+            geometries.Add(new Geometry(new Vector3(1.5, -2, 4.5), new GeometryProperty(new GeometryColor(255, 0, 255), 0.6, 0.4)));
 
 
-            geometries.Add(new Geometry(new Vector3(0, -8, 0), new GeometryProperty(new GeometryColor(255, 255, 255), 0.5, 0.5), Geometry.GType.Box, new Vector3(10, 0, 10)));
+            geometries.Add(new Geometry(new Vector3(0, -8, 0), new GeometryProperty(new GeometryColor(255, 255, 255), 0.6, 0.4), Geometry.GType.Box, new Vector3(10, 0, 10)));
             return geometries;
         }
 

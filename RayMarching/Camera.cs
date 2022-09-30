@@ -103,7 +103,7 @@ namespace RayMarching
             return pixels;
         }
 
-        public RayHit MarchRay(Vector3 rayDir, double maxRange, Vector3 startPos)
+        public RayHit MarchRay(Vector3 rayDir, double maxRange, Vector3 startPos, bool withShadowCheck = false)
         {
             // define the current position of the ray
             Vector3 currentPos = startPos;
@@ -158,13 +158,27 @@ namespace RayMarching
             if (distance <= MarchPrecission)
             {
                 // we have hit an object
-                Vector3 L = (LightPosition - currentPos).Normalize();
-                Vector3 N = Closest.GetNormal(currentPos);
-                Vector3 R = 2 * Vector3.DotProduct(L, N) * N - L;
-                return new RayHit(currentPos, Closest,N ,(startPos-currentPos).Normalize(),R);
+
+                // check if shadow
+                if (withShadowCheck)
+                {
+                    RayHit shadowHit = MarchRay((LightPosition - currentPos).Normalize(), (LightPosition - currentPos).Length, currentPos + (LightPosition - currentPos).Normalize() * MarchPrecission);
+
+                    Vector3 L = (LightPosition - currentPos).Normalize();
+                    Vector3 N = Closest.GetNormal(currentPos);
+                    Vector3 R = 2 * Vector3.DotProduct(L, N) * N - L;
+                    return new RayHit(currentPos, Closest, N, (startPos - currentPos).Normalize(), R, shadowHit.Object != null);
+                }
+                else
+                {
+                    Vector3 L = (LightPosition - currentPos).Normalize();
+                    Vector3 N = Closest.GetNormal(currentPos);
+                    Vector3 R = 2 * Vector3.DotProduct(L, N) * N - L;
+                    return new RayHit(currentPos, Closest, N, (startPos - currentPos).Normalize(), R, false);
+                }              
             }
             return new RayHit(currentPos, null,Vector3.Zero,Vector3.One,Vector3.Zero);
-        }
+        }        
 
         public PInfo[,] RenderImage()
         {
@@ -191,7 +205,7 @@ namespace RayMarching
                             int ty = y;
 
 
-                            RayHit hit = MarchRay(rays[tx, ty], MaxLength, Position);
+                            RayHit hit = MarchRay(rays[tx, ty], MaxLength, Position,true);
 
                             
 
@@ -200,7 +214,7 @@ namespace RayMarching
                                 double illumination =
                                    LightAmbient * hit.Object.Properties.AmbientConstant +
                                    hit.Object.Properties.DiffuseConstant *
-                                   (Vector3.DotProduct((LightPosition - hit.Position).Normalize(), hit.Normal)) * LightDiffuse;
+                                   (Vector3.DotProduct((LightPosition - hit.Position).Normalize(), hit.Normal)) * LightDiffuse * (hit.InShade ? 0.2 : 1);
 
                                 GeometryColor color = hit.Object.Properties.Color;//.Darken(illumination);
                                 GeometryColor colorDark = hit.Object.Properties.Color.Darken(illumination);
