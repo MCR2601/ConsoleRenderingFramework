@@ -61,8 +61,8 @@ namespace CRFVideoTools
             {
                 Console.WriteLine("Waiting");
                 Console.ReadLine();
-                ShowVideo(@"ChikaVideo\OpenCvVideoTest2.crf");
-                //ShowVideo(@"ChikaVideo\chickaNewConverted.crf");
+                ShowVideo(@"Videos\OpenCvVideoTest2.crf");
+                //ShowVideo(@"Videos\chickaNewConverted.crf");
 
             }
 
@@ -418,7 +418,7 @@ namespace CRFVideoTools
         }
         
         
-        static void ShowVideo(DirectConsoleAccess.CharInfo[][] frames)
+        static async void ShowVideo(DirectConsoleAccess.CharInfo[][] frames)
         {
 
             Console.WriteLine("Init color");
@@ -440,7 +440,7 @@ namespace CRFVideoTools
 
             for (int i = 0; i < 2589; i++)
             {
-                var back = gmu.PrintBuffer(frames[i], width, height);
+                var back = await gmu.PrintBuffer(frames[i], width, height);
                 if (!back)
                 {
                     Console.WriteLine("PAnic");

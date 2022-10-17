@@ -28,16 +28,17 @@ namespace ConsoleRenderingFramework.ConsoleSpeedUp
         }
         public override void PrintFrame()
         {
-
-            bool result = access.PrintBuffer(ScreenBuffer);
-            if (!result)
-            {
-                
-            }
+            Task.WaitAll(access.PrintBuffer(ScreenBuffer));
         }
-        public bool PrintBuffer(DirectConsoleAccess.CharInfo[] buffer, int width, int height)
+
+        public async void PrintFrameAsync()
         {
-            return access.PrintBuffer(buffer,width,height);            
+            await access.PrintBuffer(ScreenBuffer);
+        }
+
+        public async Task<bool> PrintBuffer(DirectConsoleAccess.CharInfo[] buffer, int width, int height)
+        {
+            return await access.PrintBuffer(buffer,width,height);            
         }
     }
 }

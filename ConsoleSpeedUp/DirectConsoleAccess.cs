@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
 using System.IO;
 using ConsoleRenderingFramework;
+using System.Diagnostics;
+using System.ComponentModel;
 
 namespace ConsoleRenderingFramework.ConsoleSpeedUp
 {
@@ -26,7 +28,22 @@ namespace ConsoleRenderingFramework.ConsoleSpeedUp
             Coord dwBufferCoord,
             ref SmallRect lpWriteRegion);
 
-        
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr CreateConsoleScreenBuffer(
+            UInt32 dwDesiredAccess,
+            UInt32 dwShareMode,
+            IntPtr secutiryAttributes,
+            UInt32 flags,
+            IntPtr screenBufferData
+            );
+
+        [DllImport("kernel32.dll")]
+        [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool SetConsoleActiveScreenBuffer(
+            IntPtr Handle
+            );
+
+
         [StructLayout(LayoutKind.Sequential)]
         public struct Coord
         {
@@ -68,20 +85,16 @@ namespace ConsoleRenderingFramework.ConsoleSpeedUp
         private int _BufferWidth;
         private int _BufferHeight;
 
-        private CharInfo[] _Buffer;
-
         SmallRect _WriteRegion;
 
 
-        bool doubleRegion = false;
-        SmallRect _writeRegion2;
-        int xPos1 = 0;
-        int xPos2 = 0;
-        bool currentRegion = true;
+        private int bufferCount = 1; // number of total buffers used 
+        private List<IntPtr> bufferHandles; // all buffers currently in use
+        private List<CharInfo[]> bufferBuffers; // all the character info per used buffer
+        private int nextBuffer; // the index of the next buffer used (next: (nextBuffer + 1) % bufferCount
+        private int latestFrame; // latest Frame which was dispatched (Frame number)
+        private int latestPrintFrame; // latest Frame which was set Active (Frame number)
 
-        private bool EnableDounbleBuffering = false;
-        private IntPtr ShownHandle;
-        private IntPtr WriteHandle;
 
         public DirectConsoleAccess(int width,int height,int offsetX,int offsetY)
         {
@@ -89,15 +102,29 @@ namespace ConsoleRenderingFramework.ConsoleSpeedUp
             _BufferWidth = width;
             _BufferHeight = height;
 
-            _Buffer = new CharInfo[_BufferWidth * _BufferHeight];
-            _WriteRegion = new SmallRect() {Left = (short)offsetX, Top = (short)offsetY, Right = (short)_BufferWidth, Bottom = (short)_BufferHeight };
+            bufferHandles = new List<IntPtr>();
+            bufferHandles.Add(OutHandle);
+            bufferBuffers = new List<CharInfo[]>();
+
+            nextBuffer = 0;
+            latestFrame = 0;
+            latestPrintFrame = 0;
+
+            bufferBuffers.Add(new CharInfo[_BufferWidth * _BufferHeight]);
+            _WriteRegion = new SmallRect() { Left = (short)offsetX, Top = (short)offsetY, Right = (short)_BufferWidth, Bottom = (short)_BufferHeight };
         }
 
-        public void EnableDoubleRegion(int xPos, int left,int top, int right,int bottom)
+        public void AddAdditonalBuffer()
         {
-            _writeRegion2 = new SmallRect() { Left = (short)left, Top = (short)top, Right = (short)right, Bottom = (short)bottom};
-            doubleRegion = true;
-            xPos2 = xPos;
+            IntPtr handle = CreateConsoleScreenBuffer(0x80000000 | 0x40000000, 1 | 2, IntPtr.Zero, 1, IntPtr.Zero);
+            if(handle.ToInt64() == -1)
+            {
+                throw new Exception("Was not able to create new console screen buffer");
+            }
+
+            bufferHandles.Add(handle);
+            bufferBuffers.Add(new CharInfo[_BufferWidth * _BufferHeight]);
+            bufferCount++;
         }
 
         public static CharInfo ConvertToInfo(PInfo data)
@@ -108,7 +135,7 @@ namespace ConsoleRenderingFramework.ConsoleSpeedUp
             return info;
         }
 
-        public bool PrintBuffer(PInfo[,] data)
+        public async Task<bool> PrintBuffer(PInfo[,] data)
         {
             if (data.GetLength(0) != _BufferWidth || data.GetLength(1) != _BufferHeight)
             {
@@ -116,63 +143,115 @@ namespace ConsoleRenderingFramework.ConsoleSpeedUp
                 return false;
             }
 
-            for (int x = 0; x < _BufferWidth; x++)
+
+            if (bufferCount == 1)
             {
-                for (int y = 0; y < _BufferHeight; y++)
+                // do not bother with async
+
+                for (int x = 0; x < _BufferWidth; x++)
                 {
-                    _Buffer[x + y * _BufferWidth].Char.UnicodeChar = data[x, y].Character;
-                    _Buffer[x + y * _BufferWidth].Attributes = ColorToAttribute(data[x, y]);
+                    for (int y = 0; y < _BufferHeight; y++)
+                    {
+                        bufferBuffers[0][x + y * _BufferWidth].Char.UnicodeChar = data[x, y].Character;
+                        bufferBuffers[0][x + y * _BufferWidth].Attributes = ColorToAttribute(data[x, y]);
+                    }
                 }
-            }
 
-            //SmallRect rect = new SmallRect() {Left = 0, Top = 0, Right = (short)_BufferWidth, Bottom = (short)_BufferHeight};
-
-            bool b = WriteConsoleOutput(OutHandle, _Buffer,
-                new Coord() {X = (short) _BufferWidth, Y = (short) _BufferHeight},
-                new Coord() {X = 0, Y = 0},
+                bool b = WriteConsoleOutput(bufferHandles[0], bufferBuffers[0],
+                new Coord() { X = (short)_BufferWidth, Y = (short)_BufferHeight },
+                new Coord() { X = 0, Y = 0 },
                 ref _WriteRegion);
-            return b;
-        }
+                return b;
 
-        public bool PrintBuffer(CharInfo[] buffer,int width,int height)
-        {
-            if (doubleRegion)
-            {
-                if (currentRegion)
-                {
-
-                    bool b = WriteConsoleOutput(OutHandle, buffer,
-                        new Coord() { X = (short)width, Y = (short)height },
-                        new Coord() { X = 0, Y = 0 },
-                        ref _WriteRegion);
-                    Console.SetWindowPosition(xPos1, 0);
-
-                    return b;
-                }
-                else
-                {
-
-                    bool b = WriteConsoleOutput(OutHandle, buffer,
-                        new Coord() { X = (short)width, Y = (short)height },
-                        new Coord() { X = 0, Y = 0 },
-                        ref _writeRegion2);
-                    Console.SetWindowPosition(xPos2, 0);
-
-                    return b;
-                }
             }
             else
             {
-                bool b = WriteConsoleOutput(OutHandle, buffer,
-                 new Coord() { X = (short)width, Y = (short)height },
-                 new Coord() { X = 0, Y = 0 },
-                 ref _WriteRegion);
+                // do async work
+
+                int myFrame = ++latestFrame;
+                IntPtr handle = bufferHandles[nextBuffer];
+                CharInfo[] bufferContent = bufferBuffers[nextBuffer];
+                nextBuffer = (nextBuffer + 1) % bufferCount;
+
+                for (int x = 0; x < _BufferWidth; x++)
+                {
+                    for (int y = 0; y < _BufferHeight; y++)
+                    {
+                        bufferContent[x + y * _BufferWidth].Char.UnicodeChar = data[x, y].Character;
+                        bufferContent[x + y * _BufferWidth].Attributes = ColorToAttribute(data[x, y]);
+                    }
+                }
+
+                bool b = false;
+
+                await Task.Run(() =>
+                {
+                    b = WriteConsoleOutput(handle, bufferContent,
+                    new Coord() { X = (short)_BufferWidth, Y = (short)_BufferHeight },
+                    new Coord() { X = 0, Y = 0 },
+                    ref _WriteRegion);
+                });
+
+                if (latestPrintFrame < myFrame && b)
+                {
+                    SetConsoleActiveScreenBuffer(handle);
+                    latestPrintFrame = myFrame;
+                }
+                else
+                {
+                }
+                if (!b)
+                {
+                    Win32Exception ex = new Win32Exception();
+                    string errMsg = ex.Message;
+                    b = false;
+                }
+
                 return b;
-            }   
-            
+            }
         }
 
-        
+        public async Task<bool> PrintBuffer(CharInfo[] buffer,int width,int height)
+        {
+            if (bufferCount == 1)
+            {
+                // do not bother with async
+
+                bool b = WriteConsoleOutput(bufferHandles[0], buffer,
+                new Coord() { X = (short)width, Y = (short)height },
+                new Coord() { X = 0, Y = 0 },
+                ref _WriteRegion);
+                return b;
+
+            }
+            else
+            {
+                // do async work
+
+                int myFrame = ++latestFrame;
+                IntPtr handle = bufferHandles[nextBuffer];
+                nextBuffer = (nextBuffer + 1) % bufferCount;
+
+                bool b = false;
+
+                await Task.Run(() =>
+                {
+                    b = WriteConsoleOutput(handle, buffer,
+                    new Coord() { X = (short)width, Y = (short)height },
+                    new Coord() { X = 0, Y = 0 },
+                    ref _WriteRegion);
+                });
+
+                if(latestPrintFrame < myFrame && b)
+                {
+                    SetConsoleActiveScreenBuffer(handle);
+                    latestPrintFrame = myFrame;
+                }
+                
+                return b;
+            }            
+        }
+                
 
         public void TestOutput()
         {
@@ -218,8 +297,6 @@ namespace ConsoleRenderingFramework.ConsoleSpeedUp
             int b = (int)info.Background;
             return (short)(f | (b<<4));
         }
-
-
 
         public static IntPtr GetSTD_OUT()
         {

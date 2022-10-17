@@ -194,6 +194,9 @@ namespace RayMarching
 
             mssm.AddScreen(screen, new System.Drawing.Rectangle(1, 1, width - 2, height - 2));
             gmu.PrintFrame();
+
+            gmu.access.AddAdditonalBuffer();
+            gmu.access.AddAdditonalBuffer();
             
 
             Camera c = GetCamera(GetGeometry());
@@ -341,7 +344,7 @@ namespace RayMarching
                 //Debug.WriteLine("before render");
                 screen.App_DrawScreen(c.RenderImage(), 0, 0, null);
                 //Debug.WriteLine("After render");
-                gmu.PrintFrame();
+                gmu.PrintFrameAsync();
                 #endregion
 
                 lastFrame = nextFrame;
