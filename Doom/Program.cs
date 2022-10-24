@@ -103,6 +103,11 @@ namespace Doom
         public static void StartGMU()
         {
             FastGMU gmu = new FastGMU(width, height);
+            gmu.access.AddAdditonalBuffer();
+            gmu.access.AddAdditonalBuffer();
+            gmu.access.AddAdditonalBuffer();
+            gmu.access.AddAdditonalBuffer();
+
             MultiSplitScreenManager sm = new MultiSplitScreenManager(gmu.PlacePixels, height, width);
             // use this for rendering
             FullScreenManager rs = new FullScreenManager(width - 2, height - 2, null);
@@ -183,7 +188,7 @@ namespace Doom
                     BasicProvider.TextToPInfo(( 1d /((double) watch.ElapsedMilliseconds / 1000)).ToString("#.000") + " FPS", 10, 1,
                         new PInfo().SetBg(ConsoleColor.Black).SetFg(ConsoleColor.White)), 0, 0, null);
                 watch.Restart();
-                gmu.PrintFrame();
+                gmu.PrintFrameAsync();
                 System.Threading.Thread.Sleep(1);
             }
 
