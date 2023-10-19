@@ -190,6 +190,7 @@ namespace ConsoleRenderingFramework
                     rgbMap = new PInfo[256, 256, 256];
 
                     baseValues = new List<Mapping>();
+                    
                     for (int i = 0; i < 16; i++)
                     {
                         ConsoleColor col1 = (ConsoleColor)i;
@@ -197,11 +198,11 @@ namespace ConsoleRenderingFramework
                         for (int x = i + 1; x < 16; x++)
                         {
                             ConsoleColor col2 = (ConsoleColor)x;
-                            baseValues.Add(new Mapping(new PInfo('░', col1, col2), RGB.Between(BaseColor[col1], BaseColor[col2], 0.14)));
+                            baseValues.Add(new Mapping(new PInfo('░', col1, col2), RGB.Between(BaseColor[col1], BaseColor[col2], 0.13)));
                             baseValues.Add(new Mapping(new PInfo('▒', col1, col2), RGB.Between(BaseColor[col1], BaseColor[col2], 0.25)));
                             baseValues.Add(new Mapping(new PInfo('▓', col1, col2), RGB.Between(BaseColor[col1], BaseColor[col2], 0.5)));
                             baseValues.Add(new Mapping(new PInfo('▒', col2, col1), RGB.Between(BaseColor[col1], BaseColor[col2], 0.75)));
-                            baseValues.Add(new Mapping(new PInfo('░', col2, col1), RGB.Between(BaseColor[col1], BaseColor[col2], 0.86)));
+                            baseValues.Add(new Mapping(new PInfo('░', col2, col1), RGB.Between(BaseColor[col1], BaseColor[col2], 0.87)));
                         }
                     }
                     /*

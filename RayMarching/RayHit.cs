@@ -14,17 +14,17 @@ namespace RayMarching
         public Vector3 ViewDirection;
         public Vector3 Reflection;
 
-        public bool InShade;
+        public double ShadeDistance;
 
 
-        public RayHit(Vector3 position, Geometry @object, Vector3 normal, Vector3 viewDirection, Vector3 reflection, bool inShade = false)
+        public RayHit(Vector3 position, Geometry @object, Vector3 normal, Vector3 viewDirection, Vector3 reflection, double shadeDistance = 100)
         {
             Position = position;
             Object = @object;
             Normal = normal;
             ViewDirection = viewDirection;
             Reflection = reflection;
-            InShade = inShade;
+            ShadeDistance = shadeDistance;
         }
     }
 }

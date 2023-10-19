@@ -61,8 +61,8 @@ namespace CRFVideoTools
             {
                 Console.WriteLine("Waiting");
                 Console.ReadLine();
-                ShowVideo(@"Videos\OpenCvVideoTest2.crf");
-                //ShowVideo(@"Videos\chickaNewConverted.crf");
+                ShowVideo(@"ChikaVideo\OpenCvVideoTest2.crf");
+                //ShowVideo(@"ChikaVideo\chickaNewConverted.crf");
 
             }
 
@@ -485,9 +485,14 @@ namespace CRFVideoTools
                     double fps = BitConverter.ToDouble(fP, 0);
 
 
-                    VTSGMU gmu = new VTSGMU(videoWidth + 2, videoHeight + 2);
+                    FastGMU gmu = new FastGMU(videoWidth + 2, videoHeight + 2);
+
+                    //gmu.access.AddAdditonalBuffer();
+                    //gmu.access.AddAdditonalBuffer();
+                    //gmu.access.AddAdditonalBuffer();
 
                     //gmu.access.EnableDoubleRegion(width + 2 + 1, width + 2 + 2, 1, width + 2 + width + 1, height + 1);
+                    
 
                     MultiSplitScreenManager mssm = new MultiSplitScreenManager(gmu.PlacePixels, videoWidth, videoHeight);
                     FullScreenManager screen = new FullScreenManager(videoWidth - 2, videoHeight - 2, null);
@@ -567,12 +572,13 @@ namespace CRFVideoTools
                                         screenBuffer[i].Attributes = (short)(frameData[i * 2]);
                                     }
                                     loadEnd = watch.ElapsedMilliseconds;
+                                                                       
                                     if (
                                         frameNumber * expectedFrameTime +
                                             (lastFrameTime + lastlastFrameTime) / 2
                                                 > watch.ElapsedMilliseconds)
                                     {
-                                        gmu.PrintBuffer(screenBuffer, videoWidth, videoHeight);
+                                        _ = gmu.PrintBuffer(screenBuffer, videoWidth, videoHeight);
                                         lastlastFrameTime = lastFrameTime;
                                         lastFrameTime = watch.ElapsedMilliseconds - loadEnd;
                                     }
@@ -592,6 +598,8 @@ namespace CRFVideoTools
                                         (watch.ElapsedMilliseconds - loadEnd) + ";" +
                                         (watch.ElapsedMilliseconds - frameStart) + ";" +
                                         watch.ElapsedMilliseconds);
+
+
                                     //System.Threading.Thread.Sleep(140);
                                     //if (Console.KeyAvailable)
                                     //{

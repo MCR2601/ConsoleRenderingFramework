@@ -191,10 +191,15 @@ namespace RayMarching
 
             MultiSplitScreenManager mssm = new MultiSplitScreenManager(gmu.PlacePixels, width, height);
             FullScreenManager screen = new FullScreenManager(width - 2, height - 2, null);
+            FullScreenManager fps = new FullScreenManager(width - 2, 1, null);
 
             mssm.AddScreen(screen, new System.Drawing.Rectangle(1, 1, width - 2, height - 2));
+            mssm.AddScreen(fps, new System.Drawing.Rectangle(0, 0, width - 2, 1));
             gmu.PrintFrame();
 
+            gmu.access.AddAdditonalBuffer();
+            gmu.access.AddAdditonalBuffer();
+            gmu.access.AddAdditonalBuffer();
             gmu.access.AddAdditonalBuffer();
             gmu.access.AddAdditonalBuffer();
             
@@ -221,12 +226,29 @@ namespace RayMarching
             double maxYLight = 10;
             double oneRotationY = 13_500;
 
+            long[] frameTimes = new long[100]; // should automatically initialize to only 0
+            long totalMsLast100Frames = 0;
+            long frameTimesIndex = 0;
+            long knownFrames = 1;
+            double fpsCalc = 1;
+
+
+            PInfo fpsStyle = new PInfo().SetBg(ConsoleColor.Black).SetFg(ConsoleColor.White).SetC(' ');
+
             while (running)
             {
                 //System.Threading.Thread.Sleep(20);
 
                 nextFrame = simTime.ElapsedMilliseconds;
                 frameSec = (nextFrame - lastFrame) / 1000D;
+                // update total fps
+                totalMsLast100Frames = totalMsLast100Frames - frameTimes[frameTimesIndex] + (nextFrame - lastFrame);
+                frameTimes[frameTimesIndex] = (nextFrame - lastFrame);
+                frameTimesIndex = ( frameTimesIndex + 1) % frameTimes.Length;
+                knownFrames = Math.Min(++knownFrames, 100);
+                fpsCalc = 1000D/((double)totalMsLast100Frames / ((double)knownFrames)); // these are frame times in ms --> 1000ms/s --> 1000/<average frametime>
+
+                long bInput = simTime.ElapsedMilliseconds;
 
                 #region input handle
 
@@ -332,6 +354,8 @@ namespace RayMarching
 
                 #endregion
 
+                long bSim = simTime.ElapsedMilliseconds;
+
                 #region Simulation
 
                 Vector3 newLight = new Vector3(maxXLight * (Math.Sin((nextFrame / oneRotationX) * Math.PI)), 10, maxYLight * (Math.Sin((nextFrame / oneRotationY) * Math.PI))) ;
@@ -340,11 +364,26 @@ namespace RayMarching
 
                 #endregion
 
+                long aSim = simTime.ElapsedMilliseconds;
+
                 #region rendering
                 //Debug.WriteLine("before render");
                 screen.App_DrawScreen(c.RenderImage(), 0, 0, null);
                 //Debug.WriteLine("After render");
+
+                long aDraw = simTime.ElapsedMilliseconds;
+
+                fps.App_DrawScreen(BasicProvider.getInked(width - 2, 1, fpsStyle), 0, 0, null);
+                fps.App_DrawScreen(
+                    BasicProvider.TextToPInfo(
+                        "FPS " + (fpsCalc).ToString("#.00") +
+                        " Debug values: " + BasicProvider.ValuesToString(
+                            bSim - bInput,
+                            aSim - bSim,
+                            aDraw - aSim
+                            ), width - 2, 1, fpsStyle), 0, 0, null);
                 gmu.PrintFrameAsync();
+                //gmu.PrintFrame();
                 #endregion
 
                 lastFrame = nextFrame;

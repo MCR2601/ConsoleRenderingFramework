@@ -97,7 +97,8 @@ namespace ConsoleRenderingFramework.ConsoleSpeedUp
                 cf = nextF;
                 cb = nextB;                
             }
-            Console.Write(sb.ToString());
+            Console.Out.Write(sb.ToString());
+            Console.Out.Flush();
             return true;
         }
 

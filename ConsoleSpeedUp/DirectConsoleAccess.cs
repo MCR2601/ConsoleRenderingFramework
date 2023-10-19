@@ -184,12 +184,16 @@ namespace ConsoleRenderingFramework.ConsoleSpeedUp
 
                 bool b = false;
 
+
                 await Task.Run(() =>
                 {
-                    b = WriteConsoleOutput(handle, bufferContent,
-                    new Coord() { X = (short)_BufferWidth, Y = (short)_BufferHeight },
-                    new Coord() { X = 0, Y = 0 },
-                    ref _WriteRegion);
+                    lock (bufferContent)
+                    {
+                        b = WriteConsoleOutput(handle, bufferContent,
+                            new Coord() { X = (short)_BufferWidth, Y = (short)_BufferHeight },
+                            new Coord() { X = 0, Y = 0 },
+                            ref _WriteRegion);
+                    }                    
                 });
 
                 if (latestPrintFrame < myFrame && b)
@@ -200,6 +204,7 @@ namespace ConsoleRenderingFramework.ConsoleSpeedUp
                 else
                 {
                 }
+
                 if (!b)
                 {
                     Win32Exception ex = new Win32Exception();

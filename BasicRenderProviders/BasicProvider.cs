@@ -81,6 +81,23 @@ namespace ConsoleRenderingFramework.RenderProviders
 
         }
 
+        public static string ValuesToString<T>(params T[] data)
+        {
+            if (data.Length == 0)
+            {
+                return "";
+            }
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(data[0].ToString());
+            for (int i = 1; i < data.Length; i++)
+            {
+                sb.Append(", " + data[i].ToString());
+            }
+
+            return sb.ToString();
+        }
 
         private class Word
         {

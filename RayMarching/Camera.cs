@@ -26,13 +26,14 @@ namespace RayMarching
 
         public double FOV; // in degree
 
-        public double MarchPrecission = 0.05;
+        public double MarchPrecission = 0.1;
 
         public List<Geometry> Objects;
 
         public Vector3 LightPosition;
         public double LightAmbient;
         public double LightDiffuse;
+        public double LightWidth;
 
         public ConsoleColor DefaultColor = ConsoleColor.Blue;
 
@@ -50,6 +51,7 @@ namespace RayMarching
             LightPosition = new Vector3(10, 10, 0);
             LightAmbient = 1;
             LightDiffuse = 1;
+            LightWidth = 1;
         }
 
         public Vector3[,] GetRays()
@@ -103,7 +105,7 @@ namespace RayMarching
             return pixels;
         }
 
-        public RayHit MarchRay(Vector3 rayDir, double maxRange, Vector3 startPos, bool withShadowCheck = false)
+        public RayHit MarchRay(Vector3 rayDir, double maxRange, Vector3 startPos, bool withShadowCheck = false, Geometry ignore = null)
         {
             // define the current position of the ray
             Vector3 currentPos = startPos;
@@ -113,14 +115,16 @@ namespace RayMarching
             double distance = double.PositiveInfinity;
 
             double totalDistance = 0;
+            double closestObject = double.MaxValue; // for shadow smothing
 
             var minDist = Objects.Aggregate(
                 (currMin, o) => 
-                (currMin == null || o.GetDistance(currentPos) < currMin.GetDistance(currentPos)) ? o : currMin);
+                (o != ignore && (currMin == null || o.GetDistance(currentPos) < currMin.GetDistance(currentPos))) ? o : currMin);
             
 
             Closest = minDist;
             distance = minDist.GetDistance(currentPos);
+            closestObject = double.MaxValue;
 
             double PrecissionCorrection = MarchPrecission / 3;
 
@@ -138,20 +142,25 @@ namespace RayMarching
                 minDist = Objects[0];
                 double mDist = minDist.GetDistance(currentPos); 
                 
-                for (int i = 1; i <Objects.Count ; i++)
+                for (int i = 1; i < Objects.Count ; i++)
                 {
-                    double nextDist = Objects[i].GetDistance(currentPos);
-                    if (nextDist < mDist)
+                    if (Objects[i] != ignore)
                     {
-                        minDist = Objects[i];
-                        mDist = nextDist;
-                    }
+                        double nextDist = Objects[i].GetDistance(currentPos);
+                        if (nextDist < mDist)
+                        {
+                            minDist = Objects[i];
+                            mDist = nextDist;
+                        }
+                    }                    
                 }
-
-
 
                 Closest = minDist;
                 distance = mDist;
+
+                if (distance < closestObject)
+                    closestObject = distance;
+                
                 totalDistance += distance;
             }
 
@@ -162,19 +171,22 @@ namespace RayMarching
                 // check if shadow
                 if (withShadowCheck)
                 {
-                    RayHit shadowHit = MarchRay((LightPosition - currentPos).Normalize(), (LightPosition - currentPos).Length, currentPos + (LightPosition - currentPos).Normalize() * MarchPrecission);
+                    
 
                     Vector3 L = (LightPosition - currentPos).Normalize();
                     Vector3 N = Closest.GetNormal(currentPos);
                     Vector3 R = 2 * Vector3.DotProduct(L, N) * N - L;
-                    return new RayHit(currentPos, Closest, N, (startPos - currentPos).Normalize(), R, shadowHit.Object != null);
+
+                    RayHit shadowHit = MarchRay((LightPosition - currentPos).Normalize(), (LightPosition - currentPos).Length, currentPos + N * ((MarchPrecission * 1.1 - distance) ), false, Closest );
+
+                    return new RayHit(currentPos, Closest, N, (startPos - currentPos).Normalize(), R, shadowHit.Object != null ? 0 : shadowHit.ShadeDistance);
                 }
                 else
                 {
                     Vector3 L = (LightPosition - currentPos).Normalize();
                     Vector3 N = Closest.GetNormal(currentPos);
                     Vector3 R = 2 * Vector3.DotProduct(L, N) * N - L;
-                    return new RayHit(currentPos, Closest, N, (startPos - currentPos).Normalize(), R, false);
+                    return new RayHit(currentPos, Closest, N, (startPos - currentPos).Normalize(), R, closestObject);
                 }              
             }
             return new RayHit(currentPos, null,Vector3.Zero,Vector3.One,Vector3.Zero);
@@ -214,7 +226,7 @@ namespace RayMarching
                                 double illumination =
                                    LightAmbient * hit.Object.Properties.AmbientConstant +
                                    hit.Object.Properties.DiffuseConstant *
-                                   (Vector3.DotProduct((LightPosition - hit.Position).Normalize(), hit.Normal)) * LightDiffuse * (hit.InShade ? 0.2 : 1);
+                                   (Vector3.DotProduct((LightPosition - hit.Position).Normalize(), hit.Normal)) * LightDiffuse * (Math.Min(Math.Max(0,hit.ShadeDistance), LightWidth) / LightWidth );
 
                                 GeometryColor color = hit.Object.Properties.Color;//.Darken(illumination);
                                 GeometryColor colorDark = hit.Object.Properties.Color.Darken(illumination);
