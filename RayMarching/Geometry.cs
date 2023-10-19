@@ -41,7 +41,7 @@ namespace RayMarching
 
 
         public virtual double GetDistance(Vector3 target)
-        {
+        {      
             switch (Type)
             {
                 case GType.Sphere:

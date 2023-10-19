@@ -15,7 +15,7 @@ namespace RayMarching
         public double Y;
         public double Z;
 
-        public double this[int i]
+        public double this[int i]   
         {
             get
             {
